@@ -307,6 +307,10 @@ function iniciarTempoReal(){
 // expõe o número real para a criação de orçamento
 window.__numeroOrcamento = numeroReal;
 
+// expõe a API para outros módulos (painel de atendimento)
+window.__sbApi = api;
+window.__sbConfig = { url: SB_URL, key: SB_KEY };
+
 // espera a sincronização terminar e devolve os ids que o banco gerou
 window.__aposSalvar = async function(){
   // dá até 6s para o envio terminar
