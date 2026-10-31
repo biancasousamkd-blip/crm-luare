@@ -1,5 +1,69 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><title>CRM LUARE — publicando</title></head>
-<body style="font-family:system-ui;padding:40px;text-align:center">
-<h1>CRM LUARE</h1><p>Publicação em andamento…</p>
-</body></html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM LUARE EVENTOS</title>
+
+<link rel="stylesheet" href="logo.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box">
+    <div class="wordmark">Luare</div>
+    <div class="wordmark-sub">Eventos</div>
+    <h1>CRM LUARE EVENTOS</h1>
+    <div class="sub">Porque celebrar importa</div>
+    <div class="err" id="loginErr"></div>
+    <input id="loginUser" placeholder="Usuário" autocomplete="username">
+    <input id="loginPass" type="password" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')entrar()">
+    <button class="btn p" style="width:100%;justify-content:center;margin-top:6px" onclick="entrar()">Entrar</button>
+    <div style="font-size:11.5px;color:#8b93a7;margin-top:16px;line-height:1.6">Cada pessoa entra com seu próprio usuário.<br>Troque sua senha em Configurações depois do primeiro acesso.</div>
+  </div>
+</div>
+
+<div id="app">
+<aside>
+  <div class="brand">
+    <div><div class="wordmark">Luare</div><div class="s">CRM Eventos</div></div>
+  </div>
+  <nav id="nav"></nav>
+  <div class="who">
+    <span>Conectada como</span>
+    <b id="whoName">—</b>
+    <span id="whoRole" style="font-size:11px"></span>
+    <button onclick="sair()">Sair</button>
+  </div>
+</aside>
+<main>
+  <div class="topbar">
+    <h2 id="pgTitle">Painel</h2>
+    <div class="acts" id="pgActs"></div>
+  </div>
+  <div id="view-painel" class="view"></div>
+  <div id="view-clientes" class="view"></div>
+  <div id="view-orcamentos" class="view"></div>
+  <div id="view-agenda" class="view"></div>
+  <div id="view-financeiro" class="view"></div>
+  <div id="view-followups" class="view"></div>
+  <div id="view-relatorio" class="view"></div>
+  <div id="view-config" class="view"></div>
+</main>
+</div>
+
+<!-- MODAL GENÉRICO -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<!-- ÁREA DE IMPRESSÃO -->
+<div id="printArea"></div>
+
+
+<script src="app1.js"></script>
+<script src="app2.js"></script>
+<script src="app3.js"></script>
+</body>
+</html>

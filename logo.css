@@ -1,0 +1,5 @@
+/* LUARE — marca tipográfica (sem imagens, carrega instantâneo) */
+.wordmark{font-family:Georgia,'Times New Roman',serif;font-weight:700;letter-spacing:.18em;color:#B08145;font-size:15px;text-align:center;padding:6px 0;text-transform:uppercase}
+.login-box .wordmark{font-size:28px;letter-spacing:.22em;color:#04153E;margin-bottom:4px}
+.login-box .wordmark-sub{font-family:'Segoe UI',system-ui,sans-serif;font-size:9px;letter-spacing:.42em;color:#B08145;text-transform:uppercase;text-align:center;margin-bottom:18px}
+.brand .wordmark{color:#B08145;font-size:15px;padding:0;margin-top:2px}
