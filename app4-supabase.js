@@ -96,7 +96,7 @@ function orcDoBanco(r){
            vistoEm:r.visto_em, criado:r.criado, _db:true };
 }
 function orcParaBanco(o, det){
-  return { numero:o.numero, cliente_id:vazio(o.clienteId), data_evento:vazio(o.dataEvento),
+  return { numero:o.numero, cliente_id:real(o.clienteId), data_evento:vazio(o.dataEvento),
            duracao:o.duracao, buffet:o.buffet, dia:o.dia, convidados:o.convidados,
            desconto:o.desconto||0, extras:o.extras||[], obs:vazio(o.obs),
            total:o.total, detalhe:det||null, status:o.status||'novo', visto_em:o.vistoEm||null };
@@ -108,7 +108,7 @@ function evDoBanco(r){
            status:r.status, obs:nz(r.obs), posContato:!!r.pos_contato, criado:r.criado, _db:true };
 }
 function evParaBanco(e){
-  return { orc_id:vazio(e.orcId), cliente_id:vazio(e.clienteId), tipo:vazio(e.tipo),
+  return { orc_id:real(e.orcId), cliente_id:real(e.clienteId), tipo:vazio(e.tipo),
            data:vazio(e.data), hora:vazio(e.hora), convidados:e.convidados||0,
            duracao:e.duracao||4, dia:e.dia||'semana', buffet:vazio(e.buffet),
            valor_total:e.valorTotal||0, status:e.status||'reservado',
@@ -120,7 +120,7 @@ function lanDoBanco(r){
            pago:!!r.pago, pagoEm:nz(r.pago_em), criado:r.criado, _db:true };
 }
 function lanParaBanco(l){
-  return { tipo:l.tipo, cliente_id:vazio(l.clienteId), evento_id:vazio(l.eventoId),
+  return { tipo:l.tipo, cliente_id:real(l.clienteId), evento_id:real(l.eventoId),
            descricao:vazio(l.desc), valor:l.valor, vencimento:vazio(l.venc),
            pago:!!l.pago, pago_em:vazio(l.pagoEm) };
 }
@@ -131,13 +131,23 @@ function lanParaBanco(l){
    Simples, sem reescrever cada função da interface. */
 let ULTIMO = { clientes:{}, orcamentos:{}, eventos:{}, lancamentos:{} };
 let SINCRONIZANDO = false;
+let MAPA_ID = {};      // id criado na tela -> id gerado pelo banco
+let ERROS = [];        // falhas de gravação, para mostrar ao usuário
+
+// traduz um id local para o id real do banco (quando já existe)
+function real(id){ return MAPA_ID[id] || vazio(id); }
 
 function indexar(lista){ const m={}; (lista||[]).forEach(x=>m[x.id]=JSON.stringify(x)); return m; }
 
 async function enviarDiferencas(){
   if (SINCRONIZANDO) return;
   SINCRONIZANDO = true;
+  ERROS = [];
   try {
+    // A ORDEM IMPORTA: cliente -> orçamento -> evento -> lançamento.
+    // Antes o lançamento era gravado antes do evento existir, e o vínculo
+    // (evento_id) ia com um id que ainda não estava no banco — o banco recusava
+    // e a parcela nunca aparecia. Foi por isso que o financeiro ficou vazio.
     const mapa = [
       ['clientes',   '/rest/v1/clientes',    cliDoBanco, cliParaBanco, 'nome'],
       ['orcamentos', '/rest/v1/orcamentos',  orcDoBanco, (o)=>orcParaBanco(o, o.det), 'numero'],
@@ -163,16 +173,22 @@ async function enviarDiferencas(){
         } else {
           // INSERT
           try{
+            const corpo = paraBanco(item);
             const feito = await api(rota, { method:'POST',
-              body: JSON.stringify(paraBanco(item)),
+              body: JSON.stringify(corpo),
               headers:{'Prefer':'return=representation'} });
             if (feito && feito[0] && feito[0].id){
               const novo = deBanco(feito[0]);
               // troca o objeto na lista pelo que veio do banco (id real)
               const i = atual.findIndex(x=>x.id===item.id);
               if (i >= 0) atual[i] = novo;
+              // guarda a tradução id-local -> id-do-banco para os filhos
+              MAPA_ID[item.id] = novo.id;
             }
-          }catch(e){ console.warn('falha ao inserir', chave, rotulo, e.message); }
+          }catch(e){
+            console.warn('falha ao inserir', chave, rotulo, e.message);
+            ERROS.push(rotulo + ': ' + e.message);
+          }
         }
       }
       // REMOÇÕES
@@ -186,7 +202,30 @@ async function enviarDiferencas(){
     }
   } finally {
     SINCRONIZANDO = false;
+    // se algo não gravou, a pessoa PRECISA saber — antes falhava em silêncio
+    if (ERROS.length){
+      console.warn('não gravou:', ERROS);
+      mostrarFalha(ERROS);
+    }
   }
+}
+
+function mostrarFalha(lista){
+  let el = document.getElementById('falhaBanco');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'falhaBanco';
+    el.style.cssText = 'position:fixed;bottom:16px;left:16px;right:16px;max-width:520px;margin:auto;'+
+      'background:#7a1f1f;color:#fff;padding:12px 40px 12px 14px;border-radius:8px;font-size:12.5px;'+
+      'z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,.3);line-height:1.45';
+    document.body.appendChild(el);
+  }
+  el.innerHTML = '<b>Não consegui salvar no banco</b><br>' +
+    lista.slice(0,2).map(e=>String(e).replace(/</g,'&lt;')).join('<br>') +
+    '<span style="position:absolute;right:10px;top:8px;cursor:pointer;font-size:16px" ' +
+    'onclick="this.parentNode.remove()">×</span>';
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>{ try{ el.remove(); }catch(e){} }, 12000);
 }
 
 async function carregarTudo(){

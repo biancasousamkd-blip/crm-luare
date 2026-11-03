@@ -31,7 +31,17 @@ const FUNIL=['Novo contato','Orçamento enviado','Negociando','Fechado','Perdido
 let DB=null, USER=null, VIEW='painel', calRef=new Date();
 const $=s=>document.querySelector(s);
 const pad=n=>String(n).padStart(2,'0');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const uid=()=>{
+  // UUID de verdade: o banco usa uuid como chave, e ids caseiros quebravam
+  // os vínculos (um lançamento apontando para um evento que ainda não existia no banco).
+  try{
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  }catch(e){}
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0, v=c==='x'?r:(r&0x3|0x8);
+    return v.toString(16);
+  });
+};
 const hoje=()=>new Date().toISOString().slice(0,10);
 const brl=n=>'R$ '+(Math.round((n||0)*100)/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const brl0=n=>'R$ '+Math.round(n||0).toLocaleString('pt-BR');

@@ -7,29 +7,46 @@ function excluirLanc(id){
   if(!confirm('Excluir este lançamento?')) return;
   DB.lancamentos=DB.lancamentos.filter(l=>l.id!==id); salvar(); render();
 }
-function modalLanc(){
+function modalLanc(eventoId){
+  const ev = eventoId ? DB.eventos.find(x=>x.id===eventoId) : null;
+  const cliFixo = ev && ev.clienteId ? ev.clienteId : '';
+  const hoje0 = hoje();
   modal(`
-  <h3>Novo lançamento</h3>
+  <h3>${ev?'Novo lançamento — '+esc(nomeCli(ev.clienteId)):'Novo lançamento'}</h3>
+  ${ev?`<div style="font-size:12.5px;color:var(--mut);margin-bottom:8px">Evento de ${dt(ev.data)} · ${brl0(ev.valorTotal||0)}</div>`:''}
   <div class="frow">
     <div><label>Tipo</label><select id="mlTipo"><option value="entrada">Recebimento</option><option value="saida">Despesa</option></select></div>
-    <div><label>Valor (R$) *</label><input type="number" id="mlValor" placeholder="0,00"></div>
+    <div><label>Valor (R$) *</label><input type="number" id="mlValor" placeholder="0,00" step="0.01"></div>
   </div>
   <div class="frow">
-    <div><label>Vencimento</label><input type="date" id="mlVenc"></div>
-    <div><label>Cliente (opcional)</label><select id="mlCli"><option value="">—</option>${DB.clientes.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('')}</select></div>
+    <div><label>Vencimento</label><input type="date" id="mlVenc" value="${hoje0}"></div>
+    <div><label>Cliente ${ev?'':' (opcional)'}</label>${ev&&ev.clienteId?`<input value="${esc(nomeCli(ev.clienteId))}" disabled>`:`<select id="mlCli"><option value="">—</option>${DB.clientes.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('')}</select>`}</div>
   </div>
-  <label>Descrição</label><input id="mlDesc" placeholder="Ex.: decoração, dj, aluguel de cadeiras...">
+  <div class="frow">
+    <div><label>Situação</label><select id="mlPago"><option value="nao">A receber / a pagar</option><option value="sim">Já pago / já recebido</option></select></div>
+    <div><label>Data do pagamento</label><input type="date" id="mlPagoEm" value="${hoje0}"></div>
+  </div>
+  <label>Descrição</label><input id="mlDesc" placeholder="Ex.: decoração, dj, entrada do buffet, 2ª parcela...">
   <div class="macts">
     <button class="btn s" onclick="fecharModal()">Cancelar</button>
-    <button class="btn p" onclick="salvarLanc()">Salvar</button>
+    <button class="btn p" onclick="salvarLanc(${ev?"'"+ev.id+"'":'null'})">Salvar</button>
   </div>`);
 }
-function salvarLanc(){
+function salvarLanc(eventoId){
   const v=parseFloat($('#mlValor').value);
   if(!v){ alert('Informe o valor.'); return; }
-  DB.lancamentos.push({ id:uid(), tipo:$('#mlTipo').value, valor:v, venc:$('#mlVenc').value||'',
-    clienteId:$('#mlCli').value||null, desc:$('#mlDesc').value.trim()||( $('#mlTipo').value==='entrada'?'Recebimento':'Despesa'), pago:false });
+  const tipo=$('#mlTipo').value;
+  const ev = eventoId ? DB.eventos.find(x=>x.id===eventoId) : null;
+  const cliSel = $('#mlCli');
+  const pago = $('#mlPago') && $('#mlPago').value==='sim';
+  const pagoEm = pago ? (($('#mlPagoEm')&&$('#mlPagoEm').value) || hoje()) : '';
+  DB.lancamentos.push({ id:uid(), tipo, valor:v, venc:$('#mlVenc').value||'',
+    clienteId: ev ? ev.clienteId : (cliSel ? cliSel.value||null : null),
+    eventoId: ev ? ev.id : null,
+    desc:$('#mlDesc').value.trim()||(tipo==='entrada'?'Recebimento':'Despesa'),
+    pago, pagoEm });
   salvar(); fecharModal(); render();
+  if(ev) setTimeout(()=>fichaEvento(ev.id),200);
 }
 
 /* ============================================================

@@ -229,9 +229,23 @@ function fichaEvento(id){
     <div><label>Convidados</label><input type="number" id="feConv" value="${e.convidados||0}"></div>
     <div><label>Status</label><select id="feStatus">${Object.entries(STATUS_EV).map(([k,v])=>`<option value="${k}" ${e.status===k?'selected':''}>${v}</option>`).join('')}</select></div>
   </div>
+  <label>Valor total do evento (R$)</label>
+  <input type="number" id="feValor" value="${e.valorTotal||''}" placeholder="0">
+  ${(()=>{const pago=soma(lanc.filter(l=>l.pago),l=>l.valor);
+          const aberto=soma(lanc.filter(l=>!l.pago),l=>l.valor);
+          const tot=e.valorTotal||0;
+          const falta=Math.max(tot-pago,0);
+          return `<div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 4px;font-size:12.5px">
+    <span class="tag t-ok">Pago ${brl(pago)}</span>
+    <span class="tag ${aberto>0?'t-warn':'t-ok'}">Em aberto ${brl(aberto)}</span>
+    <span class="tag ${falta>0?'t-bad':'t-ok'}">${falta>0?'Falta '+brl(falta):'Quitado ✓'}</span>
+  </div>`;})()}
   <label>Pagamentos</label>
-  ${lanc.length?lanc.map(l=>`<div class="item"><div class="m"><b>${brl(l.valor)}</b><span>${esc(l.desc)}${l.venc?' · venc. '+dt(l.venc):''}</span></div>
-    <button class="btn ${l.pago?'s':'p'} sm" onclick="togglePago('${l.id}')">${l.pago?'Pago ✓':'Marcar pago'}</button></div>`).join(''):'<div class="empty" style="padding:10px">Sem lançamentos</div>'}
+  ${lanc.length?lanc.sort((a,b)=>(a.venc||'9').localeCompare(b.venc||'9')).map(l=>`<div class="item"><div class="m"><b>${brl(l.valor)}</b><span>${esc(l.desc)}${l.venc?' · venc. '+dt(l.venc):''}${l.pago&&l.pagoEm?' · pago em '+dt(l.pagoEm):''}</span></div>
+    <button class="btn ${l.pago?'s':'p'} sm" onclick="togglePago('${l.id}')">${l.pago?'Pago ✓':'Marcar pago'}</button>
+    <button class="btn s sm" onclick="excluirLanc('${l.id}')">✕</button></div>`).join(''):'<div class="empty" style="padding:10px">Sem lançamentos — informe o valor total e salve para gerar as parcelas</div>'}
+  <div style="margin-top:8px"><button class="btn s sm" onclick="modalLanc('${e.id}')">＋ Adicionar pagamento avulso</button>
+  <button class="btn s sm" onclick="regerarParcelas('${e.id}')">↻ Regerar parcelas (30/70)</button></div>
   <label>Observações</label><textarea id="feObs" rows="2">${esc(e.obs||'')}</textarea>
   <div class="macts">
     <button class="btn d sm" onclick="cancelarEvento('${e.id}')">Cancelar evento</button>
@@ -241,9 +255,28 @@ function fichaEvento(id){
 }
 function salvarEvento(id){
   const e=DB.eventos.find(x=>x.id===id); if(!e) return;
+  const valorAntigo = e.valorTotal||0;
   e.data=$('#feData').value; e.hora=$('#feHora').value.trim(); e.convidados=+$('#feConv').value||0;
   e.status=$('#feStatus').value; e.obs=$('#feObs').value.trim();
+  const campoValor = $('#feValor');
+  if (campoValor) e.valorTotal = +campoValor.value || 0;
+
+  // o valor mudou (ou não existia)? acerta as parcelas em aberto
+  const semParcelas = DB.lancamentos.filter(l=>l.eventoId===e.id).length === 0;
+  if (e.valorTotal > 0 && (e.valorTotal !== valorAntigo || semParcelas)){
+    gerarParcelasEvento(e);
+  }
   salvar(); fecharModal(); render();
+}
+
+function regerarParcelas(id){
+  const e=DB.eventos.find(x=>x.id===id); if(!e) return;
+  if(!(e.valorTotal>0)){ alert('Informe o valor total do evento primeiro.'); return; }
+  const pagas=DB.lancamentos.filter(l=>l.eventoId===id&&l.pago);
+  if(pagas.length && !confirm('Já existe pagamento registrado. As parcelas EM ABERTO serão recalculadas descontando o que já foi pago. Continuar?')) return;
+  gerarParcelasEvento(e);
+  salvar(); fecharModal(); render();
+  setTimeout(()=>fichaEvento(id),200);
 }
 function cancelarEvento(id){
   if(!confirm('Cancelar este evento? A data volta a ficar livre.')) return;
@@ -278,12 +311,31 @@ function salvarEventoAvulso(){
     tipo:$('#meTipo').value.trim()||'Evento', convidados:+$('#meConv').value||0, duracao:4,
     valorTotal:valor, status:'reservado', obs:'', criado:new Date().toISOString() };
   DB.eventos.push(ev);
-  if(valor>0){
-    const sinal=Math.round(valor*0.3);
-    DB.lancamentos.push({ id:uid(), tipo:'entrada', clienteId:ev.clienteId, eventoId:ev.id, desc:'Sinal 30%', valor:sinal, venc:addDias(data,-7), pago:false });
-    DB.lancamentos.push({ id:uid(), tipo:'entrada', clienteId:ev.clienteId, eventoId:ev.id, desc:'Saldo 70%', valor:valor-sinal, venc:addDias(data,-7), pago:false });
-  }
+  if(valor>0) gerarParcelasEvento(ev);
   salvar(); fecharModal(); render();
+  if(!valor){
+    setTimeout(()=>alert('Evento criado sem valor.\n\nAbra o evento na Agenda e informe o valor total para o sistema gerar as parcelas (sinal 30% + saldo 70%).'), 120);
+  }
+}
+
+/* Gera (ou regera) as parcelas de um evento: sinal 30% + saldo 70%.
+   Usado ao criar o evento e ao corrigir o valor depois. */
+function gerarParcelasEvento(ev){
+  const venc = ev.data ? addDias(ev.data,-7) : '';
+  // não mexe em parcelas que já foram pagas
+  const existentes = DB.lancamentos.filter(l=>l.eventoId===ev.id && l.tipo==='entrada');
+  const pagas = existentes.filter(l=>l.pago);
+  const totalPago = soma(pagas,l=>l.valor);
+  // remove as em aberto (serão recriadas com o valor certo)
+  DB.lancamentos = DB.lancamentos.filter(l=>!(l.eventoId===ev.id && l.tipo==='entrada' && !l.pago));
+  const restante = Math.max((ev.valorTotal||0) - totalPago, 0);
+  if(restante <= 0) return totalPago;
+  const sinal = Math.round(restante*0.3);
+  DB.lancamentos.push({ id:uid(), tipo:'entrada', clienteId:ev.clienteId, eventoId:ev.id,
+    desc:'Sinal 30%'+(pagas.length?' (ajuste)':''), valor:sinal, venc, pago:false });
+  DB.lancamentos.push({ id:uid(), tipo:'entrada', clienteId:ev.clienteId, eventoId:ev.id,
+    desc:'Saldo 70%'+(pagas.length?' (ajuste)':''), valor:restante-sinal, venc, pago:false });
+  return totalPago;
 }
 
 /* ============================================================
