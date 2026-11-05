@@ -1784,8 +1784,8 @@ function vFmtLongo(iso){
 
 async function carregarVisitas(){
   try{
-    // sempre dados frescos: horário ocupado mostrado como livre é pior do que lentidão
-    const r = await fetch(SB_URL + "/rest/v1/rpc/visitas_ocupadas?t=" + Date.now(), {
+    // sempre dados frescos (só com cache:"no-store": query string extra na RPC vira filtro e quebra)
+    const r = await fetch(SB_URL + "/rest/v1/rpc/visitas_ocupadas", {
       method:"POST",
       cache:"no-store",
       headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
