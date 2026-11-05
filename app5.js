@@ -359,3 +359,89 @@ function excluirForn(id, eventoId){
   salvar(); fecharModal();
   setTimeout(()=>fichaEscala(eventoId),200);
 }
+
+/* ============================================================
+   VISITAS AGENDADAS PELO SITE
+   ============================================================ */
+const VIS_STATUS = { solicitada:'Solicitada', confirmada:'Confirmada', realizada:'Realizada', cancelada:'Cancelada' };
+
+function actsVisitas(){ $('#pgActs').innerHTML=''; }
+
+function renderVisitas(){
+  const todas=[...(DB.visitas||[])].sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora));
+  const hj=hoje();
+  const futuras=todas.filter(v=>v.data>=hj && v.status!=='cancelada');
+  const pendentes=todas.filter(v=>v.status==='solicitada' && v.data>=hj);
+  const passadas=todas.filter(v=>v.data<hj || v.status==='cancelada' || v.status==='realizada').reverse();
+
+  const linha=v=>{
+    const st=v.status||'solicitada';
+    const tone={solicitada:'t-warn',confirmada:'t-ok',realizada:'t-mut',cancelada:'t-bad'}[st]||'t-mut';
+    const tel=(v.telefone||'').replace(/\D/g,'');
+    return `<div class="item" style="align-items:flex-start">
+      <div class="ico">🚪</div>
+      <div class="m" style="flex:1">
+        <b>${dt(v.data)} · ${esc(v.hora)} — ${esc(v.nome)}</b>
+        <span>${esc(v.tipoEvento||'tipo não informado')}${v.convidados?' · '+v.convidados+' conv.':''}${v.dataEvento?' · festa em '+dt(v.dataEvento):''}</span>
+        ${v.decoracao?`<span style="display:block;font-size:12px">Decoração: ${esc(v.decoracao)}</span>`:''}
+        ${v.obs?`<span style="display:block;font-size:12px;color:var(--mut)">"${esc(v.obs)}"</span>`:''}
+        <span style="display:block;font-size:12px;margin-top:3px">${esc(v.telefone||'')}${v.email?' · '+esc(v.email):''}${v.comoConheceu?' · veio do '+esc(v.comoConheceu):''}</span>
+      </div>
+      <span class="tag ${tone}">${VIS_STATUS[st]||st}</span>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        ${st!=='confirmada'&&st!=='cancelada'?`<button class="btn p sm" onclick="mudarVisita('${v.id}','confirmada')">Confirmar</button>`:''}
+        <button class="btn s sm" onclick="viraClienteDaVisita('${v.id}')">→ Cliente</button>
+        ${tel?`<a class="btn s sm" style="text-decoration:none;text-align:center" target="_blank" href="https://wa.me/55${tel}?text=${encodeURIComponent('Olá, '+(v.nome||'').split(' ')[0]+'! Confirmando sua visita à LUARE em '+v.data.split('-').reverse().join('/')+' às '+v.hora+'. Até lá!')}">WhatsApp</a>`:''}
+        ${st!=='cancelada'?`<button class="btn s sm" onclick="mudarVisita('${v.id}','cancelada')">Cancelar</button>`:''}
+      </div>
+    </div>`;
+  };
+
+  $('#view-visitas').innerHTML=`
+  <div class="kpis">
+    <div class="kpi g"><div class="l">Visitas futuras</div><div class="v">${futuras.length}</div><div class="x">agendadas pelo site</div></div>
+    <div class="kpi o"><div class="l">Aguardando confirmação</div><div class="v">${pendentes.length}</div><div class="x">precisa responder</div></div>
+    <div class="kpi"><div class="l">Total recebido</div><div class="v">${todas.length}</div><div class="x">desde o início</div></div>
+  </div>
+
+  <div class="card">
+    <h3>Próximas visitas</h3>
+    ${futuras.length?futuras.map(linha).join(''):'<div class="empty"><span class="big">🚪</span>Nenhuma visita agendada ainda.<br>O calendário fica na seção "Agendar visita" do site.</div>'}
+  </div>
+
+  <div class="card">
+    <h3>Histórico</h3>
+    ${passadas.length?passadas.slice(0,25).map(linha).join(''):'<div class="empty" style="padding:14px">Sem histórico ainda</div>'}
+  </div>
+
+  <div class="card">
+    <h3>Como funciona</h3>
+    <div class="quote-note" style="font-size:13px;line-height:1.85">
+      O visitante escolhe dia e horário no site — cada visita reserva <b>1 hora</b> e o horário fica bloqueado para os outros.
+      Aqui você confirma, cancela ou transforma em cliente com o botão <b>→ Cliente</b>, que já cadastra o nome e o telefone dele.
+      Cancelar libera o horário de volta no site.
+    </div>
+  </div>`;
+}
+
+function mudarVisita(id, status){
+  const v=(DB.visitas||[]).find(x=>x.id===id); if(!v) return;
+  v.status=status;
+  salvar(); render();
+}
+
+function viraClienteDaVisita(id){
+  const v=(DB.visitas||[]).find(x=>x.id===id); if(!v) return;
+  const ja=DB.clientes.find(c=>(c.telefone||'').replace(/\D/g,'')===(v.telefone||'').replace(/\D/g,''));
+  if(ja){ alert('Já existe cliente com este telefone: '+ja.nome); return; }
+  DB.clientes.push({
+    id:uid(), nome:v.nome, telefone:v.telefone||'', email:v.email||'',
+    origem:v.comoConheceu||'Site — agendou visita', funil:'Novo contato',
+    obs:[v.tipoEvento?'Evento: '+v.tipoEvento:'', v.convidados?v.convidados+' convidados':'',
+         v.dataEvento?'Data desejada: '+dt(v.dataEvento):'', v.decoracao?'Decoração: '+v.decoracao:'',
+         v.obs?v.obs:''].filter(Boolean).join(' · '),
+    criado:new Date().toISOString()
+  });
+  salvar(); render();
+  alert('Cliente cadastrado! Abra Clientes para criar o orçamento.');
+}

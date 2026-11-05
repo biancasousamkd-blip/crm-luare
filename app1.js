@@ -70,6 +70,7 @@ function carregar(){
   if(!Array.isArray(DB.custos)) DB.custos=[];
   if(!Array.isArray(DB.escala)) DB.escala=[];
   if(!Array.isArray(DB.fornecedores)) DB.fornecedores=[];
+  if(!Array.isArray(DB.visitas)) DB.visitas=[];
   // acesso do Roan: garante a conta em bancos já existentes (uma única vez)
   if(!DB.config.seed2){
     if(!DB.usuarios.find(u=>u.user==='roan'))
@@ -100,6 +101,7 @@ const PAGINAS=[
   {id:'agenda',    t:'Agenda',         ic:'📅'},
   {id:'financeiro',t:'Financeiro',     ic:'💰'},
   {id:'custos',    t:'Custos fixos e variáveis', ic:'📉'},
+  {id:'visitas',   t:'Visitas agendadas', ic:'🚪'},
   {id:'equipe',    t:'Equipe e fornecedores',    ic:'🧑‍🍳'},
   {id:'followups', t:'Follow-ups',     ic:'🔔'},
   {id:'relatorio', t:'Relatório',      ic:'📊'},
@@ -116,7 +118,7 @@ function nav(){
 function ir(v){
   VIEW=v; sessionStorage.setItem('luare_view',v);
   const at={painel:()=>{actsPainel()},clientes:()=>{actsClientes()},orcamentos:()=>{actsOrcamentos()},
-    agenda:()=>{actsAgenda()},financeiro:()=>{actsFinanceiro()},custos:()=>{actsCustos()},
+    agenda:()=>{actsAgenda()},financeiro:()=>{actsFinanceiro()},custos:()=>{actsCustos()},visitas:()=>{actsVisitas()},
     equipe:()=>{actsEquipe()},followups:()=>{actsFollow()},
     relatorio:()=>{actsRelatorio()},config:()=>{actsConfig()}};
   (at[v]||(()=>{}))();
@@ -128,7 +130,7 @@ function render(){
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
   const vAtual=$('#view-'+VIEW); if(vAtual) vAtual.classList.add('on');
   const fns={painel:renderPainel,clientes:renderClientes,orcamentos:renderOrcamentos,agenda:renderAgenda,
-    financeiro:renderFinanceiro,custos:renderCustos,equipe:renderEquipe,
+    financeiro:renderFinanceiro,custos:renderCustos,visitas:renderVisitas,equipe:renderEquipe,
     followups:renderFollowups,relatorio:renderRelatorio,config:renderConfig};
   (fns[VIEW]||renderPainel)();
 }
