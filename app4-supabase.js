@@ -91,14 +91,20 @@ function cliParaBanco(c){
 function orcDoBanco(r){
   return { id:r.id, numero:r.numero, clienteId:r.cliente_id, dataEvento:nz(r.data_evento),
            duracao:r.duracao, buffet:r.buffet, dia:r.dia, convidados:r.convidados,
-           desconto:Number(r.desconto||0), extras:r.extras||[], obs:nz(r.obs),
+           desconto:Number(r.desconto||0), extras:r.extras||[],
+           servicos:r.servicos||[],
+           valorManual:Number(r.valor_manual||0),
+           obs:nz(r.obs),
            total:Number(r.total||0), det:r.detalhe||{}, status:r.status,
            vistoEm:r.visto_em, criado:r.criado, _db:true };
 }
 function orcParaBanco(o, det){
   return { numero:o.numero, cliente_id:real(o.clienteId), data_evento:vazio(o.dataEvento),
            duracao:o.duracao, buffet:o.buffet, dia:o.dia, convidados:o.convidados,
-           desconto:o.desconto||0, extras:o.extras||[], obs:vazio(o.obs),
+           desconto:o.desconto||0, extras:o.extras||[],
+           servicos:o.servicos||[],
+           valor_manual:(parseFloat(o.valorManual)||0)||null,
+           obs:vazio(o.obs),
            total:o.total, detalhe:det||null, status:o.status||'novo', visto_em:o.vistoEm||null };
 }
 function evDoBanco(r){
@@ -125,11 +131,47 @@ function lanParaBanco(l){
            pago:!!l.pago, pago_em:vazio(l.pagoEm) };
 }
 
+
+/* ---------- ESCALA DA EQUIPE ---------- */
+function escDoBanco(r){
+  return { id:r.id, eventoId:r.evento_id, nome:r.nome, funcao:nz(r.funcao),
+           telefone:nz(r.telefone), valor:Number(r.valor||0),
+           pago:!!r.pago, pagoEm:nz(r.pago_em), obs:nz(r.obs), criado:r.criado, _db:true };
+}
+function escParaBanco(x){
+  return { evento_id:real(x.eventoId), nome:x.nome, funcao:vazio(x.funcao),
+           telefone:vazio(x.telefone), valor:x.valor||0, pago:!!x.pago,
+           pago_em:vazio(x.pagoEm), obs:vazio(x.obs) };
+}
+/* ---------- FORNECEDORES EXTERNOS ---------- */
+function fornDoBanco(r){
+  return { id:r.id, eventoId:r.evento_id, nome:r.nome, servico:nz(r.servico),
+           telefone:nz(r.telefone), custo:Number(r.custo||0), repasse:Number(r.repasse||0),
+           pago:!!r.pago, recebido:!!r.recebido, obs:nz(r.obs), criado:r.criado, _db:true };
+}
+function fornParaBanco(x){
+  return { evento_id:real(x.eventoId), nome:x.nome, servico:vazio(x.servico),
+           telefone:vazio(x.telefone), custo:x.custo||0, repasse:x.repasse||0,
+           pago:!!x.pago, recebido:!!x.recebido, obs:vazio(x.obs) };
+}
+/* ---------- CUSTOS FIXOS E VARIÁVEIS ---------- */
+function custoDoBanco(r){
+  return { id:r.id, nome:r.nome, tipo:r.tipo||'fixo', categoria:nz(r.categoria),
+           valor:Number(r.valor||0), dia_venc:r.dia_venc, ativo:r.ativo!==false,
+           obs:nz(r.obs), criado:r.criado, _db:true };
+}
+function custoParaBanco(c){
+  return { nome:c.nome, tipo:c.tipo||'fixo', categoria:vazio(c.categoria),
+           valor:c.valor||0, dia_venc:c.dia_venc||null, ativo:c.ativo!==false,
+           obs:vazio(c.obs) };
+}
+
 /* ---------- sincronização ----------
    Estratégia: compara o que está em memória (alterado pela tela)
    com o último estado conhecido do banco e envia só a diferença.
    Simples, sem reescrever cada função da interface. */
-let ULTIMO = { clientes:{}, orcamentos:{}, eventos:{}, lancamentos:{} };
+let ULTIMO = { clientes:{}, orcamentos:{}, eventos:{}, lancamentos:{},
+               escala:{}, fornecedores:{}, custos:{} };
 let SINCRONIZANDO = false;
 let MAPA_ID = {};      // id criado na tela -> id gerado pelo banco
 let ERROS = [];        // falhas de gravação, para mostrar ao usuário
@@ -152,7 +194,11 @@ async function enviarDiferencas(){
       ['clientes',   '/rest/v1/clientes',    cliDoBanco, cliParaBanco, 'nome'],
       ['orcamentos', '/rest/v1/orcamentos',  orcDoBanco, (o)=>orcParaBanco(o, o.det), 'numero'],
       ['eventos',    '/rest/v1/eventos',     evDoBanco,  evParaBanco, 'tipo'],
-      ['lancamentos','/rest/v1/lancamentos', lanDoBanco, lanParaBanco, 'desc']
+      ['lancamentos','/rest/v1/lancamentos', lanDoBanco, lanParaBanco, 'desc'],
+      // dependem do evento já existir no banco, por isso vêm depois
+      ['escala',     '/rest/v1/escala',      escDoBanco, escParaBanco, 'nome'],
+      ['fornecedores','/rest/v1/fornecedores_evento', fornDoBanco, fornParaBanco, 'nome'],
+      ['custos',     '/rest/v1/custos',      custoDoBanco, custoParaBanco, 'nome']
     ];
     for (const [chave, rota, deBanco, paraBanco, rotulo] of mapa){
       const atual = DB[chave] || [];
@@ -229,20 +275,28 @@ function mostrarFalha(lista){
 }
 
 async function carregarTudo(){
-  const [cli, orc, ev, lan, perf] = await Promise.all([
+  const [cli, orc, ev, lan, perf, esc, forn, cust] = await Promise.all([
     api('/rest/v1/clientes?select=*&order=criado.desc'),
     api('/rest/v1/orcamentos?select=*&order=criado.desc'),
     api('/rest/v1/eventos?select=*&order=data.desc'),
     api('/rest/v1/lancamentos?select=*&order=criado.desc'),
-    api('/rest/v1/perfis?select=*')
+    api('/rest/v1/perfis?select=*'),
+    api('/rest/v1/escala?select=*&order=criado.desc'),
+    api('/rest/v1/fornecedores_evento?select=*&order=criado.desc'),
+    api('/rest/v1/custos?select=*&order=criado.desc')
   ]);
   DB.clientes    = (cli||[]).map(cliDoBanco);
   DB.orcamentos  = (orc||[]).map(orcDoBanco);
   DB.eventos     = (ev||[]).map(evDoBanco);
   DB.lancamentos = (lan||[]).map(lanDoBanco);
+  DB.escala      = (esc||[]).map(escDoBanco);
+  DB.fornecedores= (forn||[]).map(fornDoBanco);
+  DB.custos      = (cust||[]).map(custoDoBanco);
   ULTIMO = {
     clientes: indexar(DB.clientes), orcamentos: indexar(DB.orcamentos),
-    eventos: indexar(DB.eventos), lancamentos: indexar(DB.lancamentos)
+    eventos: indexar(DB.eventos), lancamentos: indexar(DB.lancamentos),
+    escala: indexar(DB.escala), fornecedores: indexar(DB.fornecedores),
+    custos: indexar(DB.custos)
   };
   return perf||[];
 }

@@ -45,16 +45,30 @@ function modalOrcamento(clienteId){
     <div><label>Convidados</label><input type="number" id="moConv" value="100" min="0" max="300"></div>
   </div>
   <div class="frow">
-    <div><label>Desconto (R$)</label><input type="number" id="moDesc" value="0" min="0"></div>
     <div><label>Extras (R$)</label><input type="number" id="moExtras" value="0" min="0"></div>
+    <div><label>Desconto (R$)</label><input type="number" id="moDesc" value="0" min="0"></div>
   </div>
+
+  <label style="margin-top:6px">Serviços contratados à parte</label>
+  <div class="quote-note" style="margin:0 0 8px">Decoração, plataforma 360, totem, DJ — o que entra na proposta além do espaço e do buffet.</div>
+  <div id="moServList"></div>
+  <button class="btn s sm" type="button" onclick="addServico()">＋ Adicionar serviço</button>
+
+  <div class="frow" style="margin-top:14px">
+    <div><label>Valor fechado à mão (R$)</label><input type="number" id="moManual" step="0.01" placeholder="deixe vazio para usar a tabela"></div>
+    <div><label style="opacity:.75">Usar quando der desconto</label><div class="quote-note" style="margin:8px 0 0">Se preencher, este passa a ser o total da proposta e o desconto aparece na diferença.</div></div>
+  </div>
+
   <label>Observações para o cliente</label>
   <textarea id="moObs" rows="2" placeholder="Ex.: topo de bolo incluso, horário de montagem..."></textarea>
   <div class="card" style="background:#f4f6fb;border:none;margin-top:14px">
     <div class="quote-line"><span>Espaço</span><span id="qEsp">—</span></div>
     <div class="quote-line"><span>Buffet</span><span id="qBuf">—</span></div>
+    <div class="quote-line"><span>Serviços à parte</span><span id="qServ">—</span></div>
     <div class="quote-line"><span>Extras − desconto</span><span id="qExt">—</span></div>
+    <div class="quote-line"><span>Pela tabela</span><span id="qCalc">—</span></div>
     <div class="quote-line total"><span>TOTAL</span><span id="qTot">—</span></div>
+    <div class="quote-note" id="qAviso"></div>
     <div class="quote-note">Reserva com 30% · saldo parcelado (cartão ou PIX parcelado) · quitação até 7 dias antes do evento. Convidado extra: mesmo valor por pessoa, pago após o evento.</div>
   </div>
   <div class="macts">
@@ -62,27 +76,68 @@ function modalOrcamento(clienteId){
     <button class="btn p" onclick="salvarOrc()">Salvar e ver proposta</button>
   </div>`);
   const upd=()=>{ 
-    const o={duracao:+$('#moDur').value,buffet:$('#moBuffet').value,dia:$('#moDia').value,convidados:+$('#moConv').value||0,extras:[{valor:+$('#moExtras').value||0}],desconto:+$('#moDesc').value||0};
+    const servicos=[...document.querySelectorAll('#moServList .serv-row')].map(r=>({
+      nome:r.querySelector('.serv-nome').value.trim(),
+      valor:parseFloat(r.querySelector('.serv-valor').value)||0
+    })).filter(s=>s.nome||s.valor);
+    const o={duracao:+$('#moDur').value,buffet:$('#moBuffet').value,dia:$('#moDia').value,
+      convidados:+$('#moConv').value||0,extras:[{valor:+$('#moExtras').value||0}],
+      desconto:+$('#moDesc').value||0, servicos,
+      valorManual:parseFloat($('#moManual')?.value)||0};
     const c=calcOrc(o);
     $('#qEsp').textContent=brl0(c.espaco);
-    $('#qBuf').textContent=c.buffet==='externo'?'— (externo)':brl0(c.buffetTotal)+' ('+brl0(c.buffetPp)+'/pessoa)';
+    $('#qBuf').textContent=o.buffet==='externo'?'— (externo)':brl0(c.buffetTotal)+' ('+brl0(c.buffetPp)+'/pessoa)';
+    $('#qServ').textContent=c.servicosTotal?brl0(c.servicosTotal):'—';
     $('#qExt').textContent=brl0(c.extrasTotal)+' − '+brl0(c.desconto);
+    $('#qCalc').textContent=brl0(c.calculado);
     $('#qTot').textContent=brl0(c.total)+(c.aviso?' · ⚠ '+c.aviso:'');
+    const av=[];
+    if(c.manual>0){
+      const dif=c.calculado-c.manual;
+      av.push(dif>0?`Valor fechado à mão: ${brl(dif)} abaixo da tabela (${Math.round(dif/c.calculado*100)}%).`
+                    :dif<0?`Valor fechado à mão: ${brl(-dif)} ACIMA da tabela.`:'Valor igual ao da tabela.');
+    }
+    $('#qAviso').textContent=av.join(' ');
   };
-  ['moDur','moBuffet','moDia','moConv','moDesc','moExtras'].forEach(id=>$('#'+id).addEventListener('input',upd));
+  ['moDur','moBuffet','moDia','moConv','moDesc','moExtras','moManual'].forEach(id=>{const el=$('#'+id); if(el) el.addEventListener('input',upd);});
+  $('#moServList').addEventListener('input',upd);
   upd();
 }
+
+/* linha de serviço no formulário de orçamento */
+function addServico(nome,valor){
+  const box=document.getElementById('moServList'); if(!box) return;
+  const div=document.createElement('div');
+  div.className='frow serv-row';
+  div.style.marginBottom='6px';
+  div.innerHTML=`<div><input class="serv-nome" placeholder="Decoração, plataforma 360, totem…" value="${esc(nome||'')}"></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <input class="serv-valor" type="number" step="0.01" placeholder="0,00" value="${valor||''}" style="flex:1">
+      <button class="btn s sm" type="button" onclick="this.closest('.serv-row').remove();document.getElementById('moServList').dispatchEvent(new Event('input'))">✕</button>
+    </div>`;
+  box.appendChild(div);
+  box.dispatchEvent(new Event('input'));
+}
 function salvarOrc(){
+  const servicos=[...document.querySelectorAll('#moServList .serv-row')].map(r=>({
+    nome:r.querySelector('.serv-nome').value.trim(),
+    valor:parseFloat(r.querySelector('.serv-valor').value)||0
+  })).filter(s=>s.nome||s.valor);
   const o={
     id:uid(), numero:numOrc(), criado:new Date().toISOString(),
     clienteId:$('#moCli').value, dataEvento:$('#moData').value||'',
     duracao:+$('#moDur').value, buffet:$('#moBuffet').value, dia:$('#moDia').value,
     convidados:+$('#moConv').value||0, desconto:+$('#moDesc').value||0,
     extras: (+$('#moExtras').value>0? [{nome:'Extra',valor:+$('#moExtras').value}]:[]),
+    servicos,
+    valorManual: parseFloat($('#moManual')?.value)||0,
     obs:$('#moObs').value.trim(),
     status:'novo', vistoEm:null
   };
-  const c=calcOrc(o); o.total=c.total; o.det={espaco:c.espaco,buffetPp:c.buffetPp,buffetTotal:c.buffetTotal,base:c.base,extrasTotal:c.extrasTotal};
+  const c=calcOrc(o); o.total=c.total;
+  o.det={espaco:c.espaco,buffetPp:c.buffetPp,buffetTotal:c.buffetTotal,base:c.base,
+         extrasTotal:c.extrasTotal,servicosTotal:c.servicosTotal,
+         calculado:c.calculado,descontoEfetivo:c.descontoEfetivo};
   DB.orcamentos.push(o);
   // atualiza funil do cliente
   const cli=DB.clientes.find(x=>x.id===o.clienteId);
@@ -99,9 +154,12 @@ function verOrc(id){
   <div style="margin-top:14px">
     <div class="quote-line"><span>Espaço (${o.duracao}h)</span><span>${brl0(c.espaco)}</span></div>
     ${o.buffet!=='externo'?`<div class="quote-line"><span>Buffet ${PACKS[o.buffet]} — ${o.convidados} × ${brl0(c.buffetPp)}</span><span>${brl0(c.buffetTotal)}</span></div>`:'<div class="quote-line"><span>Buffet externo (por conta do cliente)</span><span>—</span></div>'}
+    ${(c.servicos||[]).map(sv=>`<div class="quote-line"><span>${esc(sv.nome||'Serviço')}</span><span>${brl0(parseFloat(sv.valor)||0)}</span></div>`).join('')}
     ${c.extrasTotal?`<div class="quote-line"><span>Extras</span><span>${brl0(c.extrasTotal)}</span></div>`:''}
     ${c.desconto?`<div class="quote-line"><span>Desconto</span><span>− ${brl0(c.desconto)}</span></div>`:''}
+    ${c.manual>0?`<div class="quote-line"><span>Valor pela tabela</span><span>${brl0(c.calculado)}</span></div>`:''}
     <div class="quote-line total"><span>TOTAL</span><span>${brl0(c.total)}</span></div>
+    ${c.manual>0&&c.calculado>c.manual?`<div class="quote-note">Desconto concedido: <b>${brl(c.calculado-c.manual)}</b> (${Math.round((c.calculado-c.manual)/c.calculado*100)}% abaixo da tabela)</div>`:''}
     <div class="quote-note">Reserva: 30% (${brl0(c.total*0.3)}) · Saldo 70% parcelado · Quitação até 7 dias antes. Extra no dia: ${o.buffet!=='externo'?brl0(c.buffetPp):'a combinar'}/pessoa, pago após o evento.</div>
   </div>
   ${o.obs?`<label>Observações</label><textarea rows="2" readonly>${esc(o.obs)}</textarea>`:''}
@@ -143,6 +201,7 @@ function imprimirOrc(id){
   <table><tr><th>Descrição</th><th>Valor</th></tr>
   <tr><td>Espaço (${o.duracao}h${o.buffet==='externo'?', buffet externo':''})</td><td>${brl0(c.espaco)}</td></tr>
   ${o.buffet!=='externo'?`<tr><td>Buffet ${PACKS[o.buffet]} — ${o.convidados} convidados × ${brl0(c.buffetPp)}</td><td>${brl0(c.buffetTotal)}</td></tr>`:''}
+  ${(c.servicos||[]).map(sv=>`<tr><td>${esc(sv.nome||'Serviço')}</td><td>${brl0(parseFloat(sv.valor)||0)}</td></tr>`).join('')}
   ${c.extrasTotal?`<tr><td>Extras</td><td>${brl0(c.extrasTotal)}</td></tr>`:''}
   ${c.desconto?`<tr><td>Desconto</td><td>− ${brl0(c.desconto)}</td></tr>`:''}
   <tr><td><b>TOTAL</b></td><td><b>${brl0(c.total)}</b></td></tr>
@@ -342,6 +401,7 @@ function gerarParcelasEvento(ev){
    ============================================================ */
 function actsFinanceiro(){
   $('#pgActs').innerHTML=`<button class="btn s" onclick="exportarCSV('lancamentos')">⬇ CSV</button>
+  <button class="btn s" onclick="ir('custos')">📉 Custos fixos e variáveis</button>
   <button class="btn p" onclick="modalLanc()">＋ Lançamento</button>`;
 }
 function renderFinanceiro(){
@@ -358,6 +418,15 @@ function renderFinanceiro(){
     <div class="kpi o"><div class="l">Em aberto</div><div class="v">${brl0(soma(abertas,l=>l.valor))}</div><div class="x">${abertas.length} parcela(s)</div></div>
     <div class="kpi"><div class="l">Resultado</div><div class="v">${brl0(ent-sai)}</div><div class="x">entradas − despesas pagas</div></div>
   </div>
+  <div class="card"><h3>Custos da operação <button class="btn s sm" onclick="ir('custos')">gerenciar</button></h3>
+    <div class="kpis" style="margin-top:4px">
+      <div class="kpi"><div class="l">Fixo mensal</div><div class="v">${brl0(typeof totalCusto==='function'?totalCusto('fixo'):0)}</div></div>
+      <div class="kpi o"><div class="l">Variável</div><div class="v">${brl0(typeof totalCusto==='function'?totalCusto('variavel'):0)}</div></div>
+      <div class="kpi b"><div class="l">Estrutura total</div><div class="v">${brl0(typeof totalCusto==='function'?totalCusto('fixo')+totalCusto('variavel'):0)}</div></div>
+    </div>
+    <div class="quote-note">Contas fixas (aluguel, energia, internet, salários) e variáveis (gás, insumos, frete). Lance no mês com um clique em <b>Custos</b>.</div>
+  </div>
+
   <div class="card"><h3>Parcelas em aberto</h3>
     ${abertas.length?`<table><thead><tr><th>Vencimento</th><th>Descrição</th><th>Cliente</th><th class="right">Valor</th><th></th></tr></thead><tbody>
     ${abertas.map(l=>`<tr><td>${dt(l.venc)}${l.venc&&l.venc<hoje()?' <span class="tag t-bad">atrasada</span>':''}</td>

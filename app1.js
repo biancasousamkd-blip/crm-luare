@@ -66,6 +66,10 @@ function carregar(){
   try{ DB=JSON.parse(store.get(LS)) || seed(); }catch(e){ DB=seed(); }
   if(!DB.usuarios||!DB.usuarios.length) DB=seed();
   if(!DB.config) DB.config={proximoOrc:1,exemplo:false};
+  // coleções novas (custos, escala, fornecedores) — garantidas mesmo em banco antigo
+  if(!Array.isArray(DB.custos)) DB.custos=[];
+  if(!Array.isArray(DB.escala)) DB.escala=[];
+  if(!Array.isArray(DB.fornecedores)) DB.fornecedores=[];
   // acesso do Roan: garante a conta em bancos já existentes (uma única vez)
   if(!DB.config.seed2){
     if(!DB.usuarios.find(u=>u.user==='roan'))
@@ -95,6 +99,8 @@ const PAGINAS=[
   {id:'orcamentos',t:'Orçamentos',     ic:'📋'},
   {id:'agenda',    t:'Agenda',         ic:'📅'},
   {id:'financeiro',t:'Financeiro',     ic:'💰'},
+  {id:'custos',    t:'Custos fixos e variáveis', ic:'📉'},
+  {id:'equipe',    t:'Equipe e fornecedores',    ic:'🧑‍🍳'},
   {id:'followups', t:'Follow-ups',     ic:'🔔'},
   {id:'relatorio', t:'Relatório',      ic:'📊'},
   {id:'config',    t:'Configurações',  ic:'⚙'}
@@ -110,7 +116,8 @@ function nav(){
 function ir(v){
   VIEW=v; sessionStorage.setItem('luare_view',v);
   const at={painel:()=>{actsPainel()},clientes:()=>{actsClientes()},orcamentos:()=>{actsOrcamentos()},
-    agenda:()=>{actsAgenda()},financeiro:()=>{actsFinanceiro()},followups:()=>{actsFollow()},
+    agenda:()=>{actsAgenda()},financeiro:()=>{actsFinanceiro()},custos:()=>{actsCustos()},
+    equipe:()=>{actsEquipe()},followups:()=>{actsFollow()},
     relatorio:()=>{actsRelatorio()},config:()=>{actsConfig()}};
   (at[v]||(()=>{}))();
   render();
@@ -121,7 +128,8 @@ function render(){
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
   const vAtual=$('#view-'+VIEW); if(vAtual) vAtual.classList.add('on');
   const fns={painel:renderPainel,clientes:renderClientes,orcamentos:renderOrcamentos,agenda:renderAgenda,
-    financeiro:renderFinanceiro,followups:renderFollowups,relatorio:renderRelatorio,config:renderConfig};
+    financeiro:renderFinanceiro,custos:renderCustos,equipe:renderEquipe,
+    followups:renderFollowups,relatorio:renderRelatorio,config:renderConfig};
   (fns[VIEW]||renderPainel)();
 }
 
@@ -166,12 +174,20 @@ function calcOrc(o){
     buffetTotal = buffetPp*conv;
     base = espaco + buffetTotal;
   }
+  // serviços contratados à parte (decoração, plataforma 360, totem...)
+  const servicos = Array.isArray(o.servicos) ? o.servicos : [];
+  const servicosTotal = soma(servicos, s=>parseFloat(s.valor)||0);
   const extrasTotal = soma(o.extras||[], e=>parseFloat(e.valor)||0);
   const desconto = parseFloat(o.desconto)||0;
-  const total = Math.max(0, base + extrasTotal - desconto);
+  const calculado = base + extrasTotal + servicosTotal - desconto;
+  // valor fechado à mão: quando a venda foi negociada fora da tabela
+  const manual = parseFloat(o.valorManual)||0;
+  const total = manual>0 ? Math.max(0, manual) : Math.max(0, calculado);
+  const descontoEfetivo = Math.max(0, base + extrasTotal + servicosTotal - total);
   if(conv>170) aviso='Acima da capacidade (170 convidados).';
   if(conv>0 && conv<50 && o.buffet!=='externo') aviso='Mínimo de 50 convidados nos pacotes com buffet.';
-  return {espaco,buffetPp,buffetTotal,base,extrasTotal,desconto,total,aviso,conv,dia};
+  return {espaco,buffetPp,buffetTotal,base,servicosTotal,extrasTotal,desconto,calculado,manual,
+          descontoEfetivo,total,aviso,conv,dia,servicos};
 }
 function numOrc(){ const n=(DB.config.proximoOrc||1); DB.config.proximoOrc=n+1; salvar(); return 'ORC-'+new Date().getFullYear()+'-'+String(n).padStart(3,'0'); }
 const nomeCli=id=>{const c=DB.clientes.find(x=>x.id===id);return c?c.nome:'—';};
