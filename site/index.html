@@ -160,6 +160,19 @@ header.solid .brand img{height:38px}
 .gal-decor a.tile::after{content:"";position:absolute;inset:0;border:1px solid transparent;transition:border-color .3s;pointer-events:none}
 .gal-decor a.tile:hover::after{border-color:rgba(176,129,69,.75)}
 
+/* ---------- Área Kids ---------- */
+.kids-sec{background:var(--navy-2);border-top:1px solid rgba(176,129,69,.18);border-bottom:1px solid rgba(176,129,69,.18)}
+.kids-video{position:relative;margin-top:44px;border:1px solid rgba(176,129,69,.35);border-radius:6px;overflow:hidden;background:var(--navy-3)}
+.kids-video video{width:100%;display:block;max-height:460px;object-fit:cover;background:#020D28}
+.kids-video-cap{padding:18px 22px;border-top:1px solid rgba(176,129,69,.22);background:rgba(4,21,62,.8)}
+.kids-video-cap b{display:block;font-family:var(--serif);color:var(--white);font-size:1rem;font-weight:400;margin-bottom:4px}
+.kids-video-cap span{color:var(--faint);font-size:.8rem}
+.kids-gal{margin-top:16px}
+.kids-selos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;margin-top:22px;background:rgba(176,129,69,.16);border:1px solid rgba(176,129,69,.16)}
+.kids-selos div{background:var(--navy-2);padding:22px 20px}
+.kids-selos b{display:block;font-family:var(--serif);color:var(--white);font-size:.98rem;font-weight:400;margin-bottom:6px}
+.kids-selos span{color:var(--faint);font-size:.78rem;line-height:1.5}
+
 /* ---------- Valores ---------- */
 .valores-sec{background:var(--navy-2);border-top:1px solid rgba(176,129,69,.18)}
 .toggle{display:inline-flex;background:rgba(176,129,69,.12);border:1px solid rgba(176,129,69,.35);border-radius:999px;padding:5px;margin-top:30px;gap:4px}
@@ -379,6 +392,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <a href="#quem-somos">Quem somos</a>
       <a href="#incluso">O que está incluso</a>
       <a href="#espaco">O espaço</a>
+      <a href="#kids">Área Kids</a>
       <a href="#disponibilidade">Disponibilidade</a>
       <a href="#valores">Valores</a>
       <a href="#servicos">Serviços</a>
@@ -624,6 +638,49 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       </a>
     </div>
     <p class="center" style="color:var(--faint);font-size:.78rem;margin-top:22px">Clique em qualquer foto para ampliar · novas decorações entram em breve</p>
+  </div>
+</section>
+
+<!-- ================= ÁREA KIDS ================= -->
+<section id="kids" class="kids-sec">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Área Kids</div>
+      <h2 class="h2">Lugar de criança ser criança</h2>
+      <p class="lead">Espaço exclusivo para as crianças, com área baby, brinquedão, eletrônicos e <b style="color:var(--gold-hi);font-weight:600">3 monitores</b> dedicados durante todo o evento. As crianças se divertem — e os pais também.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="kids-video reveal">
+      <video id="kidsVideo" src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-tour.mp4" poster="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-airhockey.jpg" controls playsinline preload="none" muted loop></video>
+      <div class="kids-video-cap"><b>Direto da nossa Área Kids</b><span>Air hockey, brinquedão, VR e mesa de jogos — tudo dentro do espaço.</span></div>
+    </div>
+
+    <div class="gal gal-decor kids-gal reveal">
+      <a class="tile w6" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-vr.jpg" data-lb="Óculos de realidade virtual">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-vr.jpg" alt="Crianças usando óculos de realidade virtual na Área Kids" loading="eager">
+        <div class="lbl"><b>Realidade virtual</b>Óculos VR no parque de jogos</div>
+      </a>
+      <a class="tile w6" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-brinquedao.jpg" data-lb="Brinquedão e brinquedos eletrônicos">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-brinquedao.jpg" alt="Brinquedão com escorregador e piscina de bolinhas" loading="eager">
+        <div class="lbl"><b>Brinquedão</b>Escorregador, piscina de bolinhas e cama elástica</div>
+      </a>
+      <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-jogos.jpg" data-lb="Mesa de jogos">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-jogos.jpg" alt="Crianças na mesa de jogos eletrônicos" loading="eager">
+        <div class="lbl"><b>Mesa de jogos</b>Eletrônicos para todas as idades</div>
+      </a>
+      <a class="tile w8" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-airhockey.jpg" data-lb="Air hockey">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-airhockey.jpg" alt="Pai e filho jogando air hockey na Área Kids" loading="eager">
+        <div class="lbl"><b>Air hockey</b>Diversão para crianças e adultos</div>
+      </a>
+    </div>
+
+    <div class="kids-selos reveal">
+      <div><b>3 monitores</b><span>cuidando das crianças durante todo o evento</span></div>
+      <div><b>Área baby</b><span>espaço separado para os menores</span></div>
+      <div><b>Brinquedão</b><span>escorregador, piscina de bolinhas e cama elástica</span></div>
+      <div><b>Eletrônicos</b><span>VR, mesa de jogos e air hockey</span></div>
+    </div>
   </div>
 </section>
 
