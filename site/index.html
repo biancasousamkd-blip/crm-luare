@@ -814,14 +814,9 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 
     <div class="buffets reveal">
       <div class="buf">
-        <div class="nm">Mini Jantar</div>
-        <div class="pr">R$ 75 <small>/ pessoa</small></div>
-        <ul><li>Porções prontas servidas na mesa</li><li>Entradas variadas</li><li>Garçons durante o evento</li></ul>
-      </div>
-      <div class="buf">
         <div class="nm">Mini Jantar + Barracas</div>
         <div class="pr">R$ 85 <small>/ pessoa</small></div>
-        <ul><li>Tudo do Mini Jantar</li><li>Pipoca doce ou salgada</li><li>Algodão doce (2 cores)</li><li>Mini hambúrguer e crepe suíço</li></ul>
+        <ul><li>Porções prontas servidas na mesa</li><li>Entradas variadas · garçons no evento</li><li>Pipoca doce ou salgada · algodão doce</li><li>Mini hambúrguer e crepe suíço</li></ul>
       </div>
       <div class="buf">
         <div class="nm">Jantar Tradicional</div>
@@ -867,8 +862,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
         <div class="fld" id="fPacote">
           <label>Pacote</label>
           <div class="opts">
-            <button class="opt sel" data-p="75" data-k="mini" data-n="Mini Jantar" onclick="pickPac(this)"><b>Mini Jantar</b><span>R$ 75/pessoa</span></button>
-            <button class="opt" data-p="85" data-k="miniBar" data-n="Mini Jantar + Barracas" onclick="pickPac(this)"><b>Mini + Barracas</b><span>R$ 85/pessoa</span></button>
+            <button class="opt sel" data-p="85" data-k="miniBar" data-n="Mini Jantar + Barracas" onclick="pickPac(this)"><b>Mini + Barracas</b><span>R$ 85/pessoa</span></button>
             <button class="opt" data-p="85" data-k="trad" data-n="Jantar Tradicional" onclick="pickPac(this)"><b>Jantar Tradicional</b><span>R$ 85/pessoa</span></button>
             <button class="opt" data-p="100" data-k="tradBar" data-n="Tradicional + Barracas" onclick="pickPac(this)"><b>Trad. + Barracas</b><span>R$ 100/pessoa</span></button>
           </div>
@@ -895,7 +889,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 
       <div class="sim-res">
         <div class="k">Seu orçamento estimado</div>
-        <div class="res-line"><span id="rDescr">Mini Jantar · 100 convidados</span><b id="rDur">4h</b></div>
+        <div class="res-line"><span id="rDescr">Mini Jantar + Barracas · 100 convidados</span><b id="rDur">4h</b></div>
         <div class="res-line"><span>Aluguel do espaço</span><b id="rEspaco">R$ 3.500</b></div>
         <div class="res-line" id="rBufLine"><span id="rBufLbl">Buffet</span><b id="rBuffet">R$ 7.500</b></div>
         <div class="res-total"><span>Total</span><b id="rTotal">R$ 11.000</b></div>
@@ -1345,12 +1339,11 @@ const ESPACO = {
 // tabela publicada dos pacotes de 6h (convidados 50..170) — igual ao CRM
 const CONV6H = [50,80,100,120,140,160,170];
 const TAB6H = {
-  mini:    { s:[11000,13500,15000,16500,18000,19500,20250], f:[11500,14000,15500,17000,18500,20000,20750] },
   miniBar: { s:[12000,14500,16000,17500,19000,20500,21250], f:[12500,15000,16500,18000,19500,21000,21750] },
   trad:    { s:[12000,14500,16000,17500,19000,20500,21250], f:[12500,15000,16500,18000,19500,21000,21750] },
   tradBar: { s:[13500,16000,17500,19000,20500,22000,22750], f:[14000,16500,18000,19500,21000,22500,23250] }
 };
-const st = { modo:"luare", pac:75, pacKey:"mini", pacNome:"Mini Jantar", dia:"semana", dur:4, data:"" };
+const st = { modo:"luare", pac:85, pacKey:"miniBar", pacNome:"Mini Jantar + Barracas", dia:"semana", dur:4, data:"" };
 
 const brl = v => "R$ " + v.toLocaleString("pt-BR");
 const $ = id => document.getElementById(id);
