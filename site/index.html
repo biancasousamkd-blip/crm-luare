@@ -78,12 +78,16 @@ header.solid .brand img{height:38px}
 .hero h1{font-size:clamp(2.1rem,6vw,3.9rem);color:var(--white);letter-spacing:-.02em;animation:floatIn 1.2s .1s var(--ease) both}
 .hero .sub{font-family:var(--serif);font-style:italic;color:var(--gold-hi);font-size:clamp(1rem,2.2vw,1.3rem);margin-top:14px;animation:floatIn 1.2s .2s var(--ease) both}
 .hero p.desc{color:var(--dim);max-width:580px;margin:24px auto 38px;font-size:1.03rem;animation:floatIn 1.2s .3s var(--ease) both}
-.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:floatIn 1.2s .4s var(--ease) both}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:floatIn 1.2s .4s var(--ease) both;max-width:none}
+.hero-actions .btn{padding:15px 26px;font-size:.9rem}
+@media(max-width:820px){.hero-actions{gap:10px}.hero-actions .btn{padding:13px 18px;font-size:.82rem}}
 @keyframes floatIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
 .btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;padding:16px 36px;border-radius:999px;font-size:.94rem;letter-spacing:.03em;font-weight:500;transition:all .28s var(--ease);border:1px solid transparent;cursor:pointer;font-family:var(--sans)}
 .btn-primary{background:var(--gold);color:#fff}
 .btn-primary:hover{background:var(--gold-hi);transform:translateY(-2px);box-shadow:0 12px 30px rgba(176,129,69,.32)}
+.btn-gold{background:transparent;border-color:var(--gold);color:var(--gold-hi);position:relative}
+.btn-gold:hover{background:rgba(176,129,69,.16);border-color:var(--gold-hi);transform:translateY(-2px)}
 .btn-outline{border-color:rgba(176,129,69,.6);color:var(--gold-hi);background:transparent}
 .btn-outline:hover{background:rgba(176,129,69,.13);border-color:var(--gold)}
 
@@ -429,6 +433,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     <p class="desc">Um espaço completo, buffet próprio e uma equipe que cuida de cada detalhe — para você só se preocupar em aproveitar a sua festa.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#valores">Montar meu orçamento</a>
+      <a class="btn btn-gold" href="#decoracao">Orçamento de decoração</a>
       <a class="btn btn-outline" href="#contato">Agendar uma visita</a>
     </div>
     <div class="hero-stats">
@@ -975,7 +980,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
           <div class="dcard">
             <div class="ic">✦</div>
             <div><b>Você escolhe o nível de produção</b>
-              <p>De uma mesa de bolo delicada a um cenário completo com painel, teto e entrada cenográfica: definimos juntos o que faz sentido para o seu evento e o seu investimento.</p></div>
+              <p>Três caminhos: <b style="color:var(--gold-hi);font-weight:600">Básico</b> (cenário de bolo), <b style="color:var(--gold-hi);font-weight:600">Intermediário</b> (entrada + cenário do bolo) e <b style="color:var(--gold-hi);font-weight:600">Completo</b> (entrada + recepção + cenário do bolo). Você escolhe no formulário e a gente monta a proposta em cima disso.</p></div>
           </div>
           <div class="dcard">
             <div class="ic">✦</div>
@@ -1039,9 +1044,9 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
             <label for="dnivel">Nível de produção</label>
             <select id="dnivel">
               <option>Quero sugestões — ainda não sei</option>
-              <option>Simples e delicado (mesa, bolo, balões)</option>
-              <option>Intermediário (painel + mesa + entrada)</option>
-              <option>Completo (cenário, teto, entrada cenográfica)</option>
+              <option>Básico — cenário de bolo</option>
+              <option>Intermediário — entrada + cenário do bolo</option>
+              <option>Completo — entrada + recepção + cenário do bolo</option>
             </select>
           </div>
           <div class="vf">
