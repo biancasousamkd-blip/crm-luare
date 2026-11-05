@@ -24,7 +24,7 @@ function renderOrcamentos(){
 }
 function modalOrcamento(clienteId){
   if(!DB.clientes.length){ alert('Cadastre um cliente primeiro.'); ir('clientes'); return; }
-  const o={ duracao:4, buffet:'mini', dia:'semana', convidados:100, extras:[], desconto:0 };
+  const o={ duracao:4, buffet:'miniBar', dia:'semana', convidados:100, extras:[], desconto:0 };
   modal(`
   <h3>Novo orçamento</h3>
   <div class="frow">
@@ -37,7 +37,6 @@ function modalOrcamento(clienteId){
   </div>
   <div class="frow">
     <div><label>Pacote de buffet</label><select id="moBuffet">
-      <option value="mini">Mini Jantar — R$ 75/pessoa</option>
       <option value="miniBar">Mini Jantar + Barracas — R$ 85/pessoa</option>
       <option value="trad">Jantar Tradicional — R$ 85/pessoa</option>
       <option value="tradBar">Tradicional + Barracas — R$ 100/pessoa</option>
