@@ -102,6 +102,15 @@ header.solid .brand img{height:38px}
 .hero h1 em{font-style:italic;color:var(--gold-hi);font-weight:400}
 .hero .sub{font-family:var(--serif);font-style:italic;color:rgba(246,247,236,.6);font-size:clamp(.98rem,1.9vw,1.16rem);margin-top:20px}
 .hero p.desc{color:var(--dim);max-width:470px;margin:24px 0 38px;font-size:.97rem;line-height:1.8;font-weight:300}
+.hero-offer{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:0 0 34px;border:1px solid rgba(176,129,69,.4);border-radius:4px;overflow:hidden;background:rgba(176,129,69,.07);width:fit-content;max-width:100%}
+.hero-offer span{display:flex;flex-direction:column;gap:3px;padding:13px 22px;font-size:.78rem;letter-spacing:.02em;color:var(--white);white-space:nowrap;border-right:1px solid rgba(176,129,69,.26)}
+.hero-offer span:last-child{border-right:0}
+.hero-offer span b{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-hi);font-weight:600}
+@media(max-width:620px){
+  .hero-offer{width:100%;margin-bottom:26px}
+  .hero-offer span{flex:1 1 0;min-width:0;padding:11px 10px;white-space:normal;text-align:center;align-items:center;font-size:.72rem}
+  .hero-offer span b{font-size:.54rem;letter-spacing:.12em}
+}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .hero-actions .btn{padding:13px 19px;font-size:.81rem;letter-spacing:.02em;white-space:nowrap}
 .hero-visual{position:relative;display:grid;place-items:center;min-height:360px}
@@ -475,6 +484,11 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <h1>Porque<br><em>celebrar</em> importa</h1>
       <div class="sub">Uma casa de eventos no coração do Amapá</div>
       <p class="desc">Espaço completo, buffet próprio e uma equipe que cuida de cada detalhe — para você só se preocupar em aproveitar a sua festa.</p>
+      <div class="hero-offer">
+        <span><b>Temos</b>Aluguel do espaço</span>
+        <span><b>+</b>Buffet próprio</span>
+        <span><b>+</b>Decoração</span>
+      </div>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#valores">Montar meu orçamento</a>
         <a class="btn btn-gold" href="#decoracao">Orçamento de decoração</a>
