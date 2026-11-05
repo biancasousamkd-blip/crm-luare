@@ -38,6 +38,20 @@ section{padding:96px 0;position:relative}
 .center{text-align:center}
 .center .lead{margin-left:auto;margin-right:auto}
 .divider{width:56px;height:2px;background:var(--gold);margin:26px auto 0}
+/* cabecalho editorial (lado esquerdo, filete dourado) */
+.sec-head{position:relative;margin-bottom:46px}
+.sec-head .kicker{margin-bottom:16px}
+.sec-head .h2{letter-spacing:-.022em;max-width:760px}
+.sec-head .lead{max-width:600px;margin-top:18px;font-size:1rem;line-height:1.78}
+.sec-head .lead b{font-weight:600}
+.sec-head::before{content:"";position:absolute;left:-28px;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg,rgba(176,129,69,.55),transparent)}
+@media(max-width:700px){.sec-head::before{display:none}.sec-head{margin-bottom:34px}}
+.sec-head.center{text-align:left}
+.sec-head.center .lead{margin-left:0;margin-right:0}
+.sec-head .divider{margin-left:0;margin-top:24px}
+.sec-head.center .divider{margin-left:0}
+.sec-head-aside{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end}
+@media(max-width:860px){.sec-head-aside{grid-template-columns:1fr;align-items:start}}
 .center .divider{margin-left:auto;margin-right:auto}
 
 /* ---------- Header ---------- */
@@ -188,7 +202,10 @@ header.solid .brand img{height:38px}
 .gal-decor .lbl{font-size:.74rem;color:rgba(246,247,236,.7);line-height:1.5}
 .gal-decor a.tile::after{content:"";position:absolute;inset:0;border:1px solid transparent;transition:border-color .3s;pointer-events:none}
 .gal-decor a.tile:hover::after{border-color:rgba(176,129,69,.75)}
-.gal-cas a.tile.w6{aspect-ratio:16/10}
+.gal-cas a.tile.w6{aspect-ratio:1.542}
+.gal-cas a.tile.w3{aspect-ratio:3/4}
+.gal .w3{grid-column:span 3}
+@media(max-width:860px){.gal .w3{grid-column:span 12}}
 @media(max-width:860px){.gal-cas a.tile{aspect-ratio:4/3}}
 
 /* ---------- Área Kids ---------- */
@@ -485,7 +502,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= DISPONIBILIDADE ================= -->
 <section id="disponibilidade" class="disp-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Agenda</div>
       <h2 class="h2">A sua data está livre?</h2>
       <p class="lead">Consulte aqui mesmo — o calendário mostra as datas já reservadas na nossa agenda.</p>
@@ -529,8 +546,10 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
   <div class="wrap">
     <div class="two-col">
       <div class="reveal">
-        <div class="kicker">Quem somos</div>
-        <h2 class="h2">Uma casa feita para celebrar a vida</h2>
+        <div class="sec-head" style="margin-bottom:30px">
+          <div class="kicker">Quem somos</div>
+          <h2 class="h2">Uma casa feita para celebrar a vida</h2>
+        </div>
         <p class="lead">A LUARE EVENTOS nasceu em Santana, no Amapá, com uma ideia simples e teimosa: toda conquista merece ser celebrada com cuidado. Do aniversário de criança ao casamento, cada festa que passa por aqui recebe a mesma atenção — porque não existe evento pequeno quando o momento é grande.</p>
         <p class="lead">Cuidamos do espaço, da comida, da estrutura e da equipe. Você cuida dos convidados e das memórias.</p>
 
@@ -567,7 +586,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= O QUE ESTÁ INCLUSO ================= -->
 <section id="incluso" class="incluso">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">O que está incluso</div>
       <h2 class="h2">O aluguel já vem completo</h2>
       <p class="lead">Contratando o espaço, tudo isso já está incluído — sem surpresa no orçamento final.</p>
@@ -593,7 +612,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= DIFERENCIAIS ================= -->
 <section id="diferenciais">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Nossos diferenciais</div>
       <h2 class="h2">Por que celebrar aqui</h2>
       <p class="lead">Estrutura de casa de eventos, cuidado de festa de família.</p>
@@ -613,7 +632,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= O ESPAÇO ================= -->
 <section id="espaco" class="incluso">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Nosso espaço</div>
       <h2 class="h2">Conheça como se estivesse aqui</h2>
       <p class="lead">Um tour pelo salão, pelos ambientes e pelas decorações que já passaram por aqui.</p>
@@ -645,7 +664,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     </div>
 
     <!-- DECORAÇÕES -->
-    <div class="center reveal" style="margin-top:76px">
+    <div class="sec-head reveal" style="margin-top:76px">
       <div class="kicker">Decorações</div>
       <h2 class="h2" style="font-size:clamp(1.5rem,3vw,2.1rem)">Festas que passaram por aqui</h2>
       <p class="lead">Um pouco das celebrações e decorações que já aconteceram na LUARE.</p>
@@ -695,7 +714,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     </div>
     <p class="center" style="color:var(--faint);font-size:.78rem;margin-top:22px">Clique em qualquer foto para ampliar · novas decorações entram em breve</p>
     <!-- CASAMENTOS -->
-    <div class="center reveal" style="margin-top:80px">
+    <div class="sec-head reveal" style="margin-top:80px">
       <div class="kicker">Casamentos</div>
       <h2 class="h2" style="font-size:clamp(1.5rem,3vw,2.1rem)">Casamentos na LUARE</h2>
       <p class="lead">Do arco na entrada ao cenário do bolo — projetos que já montamos aqui.</p>
@@ -703,24 +722,28 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     </div>
     <div class="gal gal-decor gal-cas reveal" style="margin-top:38px">
       <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-entrada.jpg" data-lb="Entrada iluminada">
-        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-entrada.jpg" alt="Entrada da LUARE Eventos decorada para casamento" loading="eager">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-entrada.jpg" alt="Entrada da LUARE Eventos decorada para casamento com arco floral" loading="eager">
         <div class="lbl"><b>Entrada iluminada</b>Arco floral e projeção no telão</div>
       </a>
-      <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-bolo.jpg" data-lb="Mesa do bolo">
-        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-bolo.jpg" alt="Mesa do bolo de casamento com flores roxas" loading="eager">
-        <div class="lbl"><b>Mesa do bolo</b>Bolo de quatro andares e flores</div>
-      </a>
-      <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-doces.jpg" data-lb="Mesa de doces">
-        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-doces.jpg" alt="Mesa de doces de casamento com bolo e velas" loading="eager">
-        <div class="lbl"><b>Mesa de doces</b>Bem-casados e velas</div>
-      </a>
-      <a class="tile w6" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-arco.jpg" data-lb="Arco de entrada">
+      <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-arco.jpg" data-lb="Arco de entrada">
         <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-arco.jpg" alt="Arco de flores brancas na entrada do salão" loading="eager">
         <div class="lbl"><b>Arco de entrada</b>Tecido, flores e luzinhas</div>
       </a>
-      <a class="tile w6" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-salao.jpg" data-lb="Salão montado">
+      <a class="tile w4" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-salao.jpg" data-lb="Salão montado">
         <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-salao.jpg" alt="Salão de casamento com mesas postas e centros de flores" loading="eager">
         <div class="lbl"><b>Salão montado</b>Mesas postas para a recepção</div>
+      </a>
+      <a class="tile w6" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-mesa.jpg" data-lb="Mesa do bolo">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-mesa.jpg" alt="Mesa do bolo de casamento com bolo de quatro andares, flores e painel do casal" loading="eager">
+        <div class="lbl"><b>Mesa do bolo</b>Painel do casal, flores e o "AMOR" dourado</div>
+      </a>
+      <a class="tile w3" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-bolo.jpg" data-lb="Bolo e flores">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-bolo.jpg" alt="Bolo de casamento de quatro andares com flores roxas" loading="eager">
+        <div class="lbl"><b>Bolo e flores</b>Quatro andares, flores roxas</div>
+      </a>
+      <a class="tile w3" href="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-doces.jpg" data-lb="Mesa de doces">
+        <img src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/decor-casamento-doces.jpg" alt="Mesa de doces de casamento com velas" loading="eager">
+        <div class="lbl"><b>Mesa de doces</b>Bem-casados e velas</div>
       </a>
     </div>
 
@@ -730,7 +753,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= ÁREA KIDS ================= -->
 <section id="kids" class="kids-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Área Kids</div>
       <h2 class="h2">Lugar de criança ser criança</h2>
       <p class="lead">Espaço exclusivo para as crianças, com área baby, brinquedão, eletrônicos e <b style="color:var(--gold-hi);font-weight:600">3 monitores</b> dedicados durante todo o evento. As crianças se divertem — e os pais também.</p>
@@ -779,7 +802,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= VALORES ================= -->
 <section id="valores" class="valores-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Valores 2027</div>
       <h2 class="h2">Escolha o seu pacote</h2>
       <p class="lead">Buffet por pessoa + aluguel do espaço. Valores claros, sem surpresa.</p>
@@ -887,7 +910,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     </div>
 
     <!-- RESERVA -->
-    <div class="center reveal" style="margin-top:80px">
+    <div class="sec-head reveal" style="margin-top:80px">
       <div class="kicker">Reserva</div>
       <h2 class="h2" style="font-size:clamp(1.5rem,3vw,2.1rem)">Como reservar a sua data</h2>
     </div>
@@ -903,7 +926,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= SERVIÇOS EXTRAS ================= -->
 <section id="servicos" class="servicos-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Serviços</div>
       <h2 class="h2">Para a festa render mais</h2>
       <p class="lead">Totem de fotos, plataforma 360° e o combo com os dois. Serviços avulsos — não entram na simulação do buffet, são contratados à parte.</p>
@@ -1032,7 +1055,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= DECORAÇÃO ================= -->
 <section id="decoracao" class="decor-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Decoração</div>
       <h2 class="h2">A festa com a sua cara</h2>
       <p class="lead">A decoração é a parte mais pessoal do evento — e a que mais muda de festa para festa. Não trabalhamos com pacote fechado: cada projeto é desenhado do zero, junto com você.</p>
@@ -1133,7 +1156,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= DEPOIMENTOS ================= -->
 <section id="depoimentos" class="depo-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Depoimentos</div>
       <h2 class="h2">Quem celebrou aqui</h2>
       <p class="lead">Mensagens que recebemos de famílias que passaram pela LUARE. Sem roteiro, sem edição — do jeito que chegaram no nosso WhatsApp.</p>
@@ -1201,7 +1224,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 <!-- ================= CONTATO ================= -->
 <section id="contato" class="contato-sec">
   <div class="wrap">
-    <div class="center reveal">
+    <div class="sec-head reveal">
       <div class="kicker">Fale com a gente</div>
       <h2 class="h2">Vamos marcar a sua visita?</h2>
       <p class="lead">Conhecer o espaço pessoalmente é o melhor jeito de escolher. Chame no WhatsApp, agende um horário ou veja mais no Instagram.</p>
