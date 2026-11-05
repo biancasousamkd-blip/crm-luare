@@ -314,6 +314,32 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 .avail-hint{font-size:.8rem;color:var(--faint);margin-top:12px;line-height:1.6}
 .avail-hint b{color:var(--gold-hi)}
 
+/* ---------- Serviços (totem / 360 / combo) ---------- */
+.servicos-sec{border-top:1px solid rgba(176,129,69,.18)}
+.svc-group{margin-top:52px}
+.svc-head{display:flex;align-items:baseline;gap:8px 16px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(176,129,69,.2)}
+.svc-head .tt{font-family:var(--serif);color:var(--white);font-size:1.12rem}
+.svc-head .ds{color:var(--faint);font-size:.79rem;line-height:1.5}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:16px}
+.svc{border:1px solid rgba(176,129,69,.26);border-radius:5px;padding:26px 22px 22px;background:rgba(4,21,62,.55);position:relative;transition:border-color .3s,transform .3s;display:flex;flex-direction:column}
+.svc:hover{border-color:rgba(176,129,69,.6);transform:translateY(-2px)}
+.svc.top{border-color:rgba(176,129,69,.68);background:rgba(176,129,69,.07)}
+.svc .tag{position:absolute;top:-9px;left:20px;background:var(--gold);color:#fff;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;padding:4px 11px;border-radius:999px}
+.svc .nm{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-hi)}
+.svc .hr{font-family:var(--serif);color:var(--white);font-size:1rem;margin-top:7px;line-height:1.35}
+.svc .de{font-size:.74rem;color:var(--faint);text-decoration:line-through;margin-top:14px}
+.svc .pr{font-family:var(--serif);font-size:1.62rem;color:var(--gold-hi);margin:2px 0 0}
+.svc .pr small{font-family:var(--sans);font-size:.66rem;color:var(--faint);letter-spacing:.05em;display:block;margin-top:3px}
+.svc .luare{margin-top:11px;padding-top:11px;border-top:1px solid rgba(176,129,69,.2);font-size:.76rem;color:var(--dim);line-height:1.5}
+.svc .luare b{color:var(--gold-hi);font-family:var(--serif);font-size:.94rem}
+.svc ul{list-style:none;margin-top:14px;flex:1}
+.svc li{color:var(--dim);font-size:.78rem;padding:4px 0 4px 15px;position:relative;line-height:1.5}
+.svc li::before{content:"";position:absolute;left:0;top:11px;width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.svc-cta{margin-top:16px;display:block;text-align:center;border:1px solid rgba(176,129,69,.5);border-radius:6px;padding:10px;font-size:.78rem;letter-spacing:.06em;color:var(--gold-hi);text-decoration:none;transition:.25s}
+.svc-cta:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.svc-extras{margin-top:14px;font-size:.79rem;color:var(--faint);line-height:1.6;background:rgba(176,129,69,.07);border-left:2px solid rgba(176,129,69,.5);padding:12px 16px;border-radius:0 4px 4px 0}
+.svc-extras b{color:var(--gold-hi);font-weight:600}
+
 /* ---------- Decoração ---------- */
 .decor-sec{background:linear-gradient(180deg,var(--navy),var(--navy-2))}
 .decor-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,5vw,60px);margin-top:48px;align-items:start}
@@ -353,6 +379,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <a href="#espaco">O espaço</a>
       <a href="#disponibilidade">Disponibilidade</a>
       <a href="#valores">Valores</a>
+      <a href="#servicos">Serviços</a>
       <a href="#decoracao">Decoração</a>
       <a href="#contato">Contato</a>
       <a href="#disponibilidade" class="nav-cta">Ver minha data</a>
@@ -718,6 +745,135 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <div class="passo"><div class="n">02</div><b>70% parcelado</b><p>O restante pode ser dividido no cartão de crédito ou no PIX parcelado, na data combinada.</p></div>
       <div class="passo"><div class="n">03</div><b>Quitação · 7 dias</b><p>O evento deve estar 100% quitado até 7 dias antes da data contratada.</p></div>
       <div class="passo"><div class="n">✦</div><b>Extras depois</b><p>Convidados que passarem da faixa pagam o mesmo valor por pessoa, acertado após o evento.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVIÇOS EXTRAS ================= -->
+<section id="servicos" class="servicos-sec">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Serviços</div>
+      <h2 class="h2">Para a festa render mais</h2>
+      <p class="lead">Totem de fotos, plataforma 360° e o combo com os dois. Serviços avulsos — não entram na simulação do buffet, são contratados à parte.</p>
+      <div class="divider"></div>
+    </div>
+
+    <!-- COMBO -->
+    <div class="svc-group reveal">
+      <div class="svc-head">
+        <div class="tt">Combo Premium</div>
+        <div class="ds">Totem de fotos + plataforma 360° no mesmo pacote · mais diversão, mais lembranças</div>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <div class="nm">Combo Silver</div>
+          <div class="hr">2h Totem + 2h 360°</div>
+          <div class="de">De R$ 1.499</div>
+          <div class="pr">R$ 1.299</div>
+          <div class="luare">Cliente LUARE: <b>R$ 1.199</b></div>
+          <ul>
+            <li>Fotos ilimitadas</li>
+            <li>Impressão na hora</li>
+            <li>Vídeos 360° ilimitados</li>
+            <li>Layout personalizado</li>
+            <li>Monitor incluso</li>
+          </ul>
+          <div class="svc-extras">Ideal para aniversários, chá revelação, infantil e mini weddings.</div>
+        </div>
+        <div class="svc top">
+          <div class="tag">Mais vendido</div>
+          <div class="nm">Combo Premium</div>
+          <div class="hr">3h Totem + 3h 360°</div>
+          <div class="de">De R$ 1.899</div>
+          <div class="pr">R$ 1.649</div>
+          <div class="luare">Cliente LUARE: <b>R$ 1.549</b></div>
+          <ul>
+            <li>Tudo do Combo Silver</li>
+            <li>Álbum digital pós-evento</li>
+            <li>Moldura personalizada premium</li>
+            <li>Galeria digital 360</li>
+          </ul>
+          <div class="svc-extras">Ideal para 15 anos, casamentos e formaturas.</div>
+        </div>
+        <div class="svc">
+          <div class="nm">Combo Experience</div>
+          <div class="hr">4h Totem + 4h 360°</div>
+          <div class="de">De R$ 2.399</div>
+          <div class="pr">R$ 2.099</div>
+          <div class="luare">Cliente LUARE: <b>R$ 1.999</b></div>
+          <ul>
+            <li>Tudo do Combo Premium</li>
+            <li>Atendimento estendido</li>
+            <li>Suporte durante todo o evento</li>
+          </ul>
+          <div class="svc-extras">Ideal para eventos corporativos, grandes festas e casamentos premium.</div>
+        </div>
+      </div>
+      <div class="svc-extras">Contratando o combo junto com a sua festa, você garante o valor de Cliente LUARE. O combo avulso sai pelo valor normal.</div>
+    </div>
+
+    <!-- TOTEM -->
+    <div class="svc-group reveal">
+      <div class="svc-head">
+        <div class="tt">Totem Selfie</div>
+        <div class="ds">Registre sorrisos, imprima momentos e crie lembranças inesquecíveis · incluso em todos: fotos ilimitadas, impressão na hora, layout personalizado e monitor</div>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <div class="nm">Basic</div>
+          <div class="hr">2h de cobertura</div>
+          <div class="pr" style="margin-top:14px">R$ 999</div>
+          <div class="svc-extras" style="margin-top:14px">Fotos ilimitadas, impressão na hora, layout personalizado e monitor incluso.</div>
+        </div>
+        <div class="svc top">
+          <div class="tag">Mais vendido</div>
+          <div class="nm">Premium</div>
+          <div class="hr">3h de cobertura</div>
+          <div class="pr" style="margin-top:14px">R$ 1.199</div>
+          <div class="svc-extras" style="margin-top:14px">Fotos ilimitadas, impressão na hora, layout personalizado e monitor incluso.</div>
+        </div>
+        <div class="svc">
+          <div class="nm">Gold</div>
+          <div class="hr">4h de cobertura</div>
+          <div class="pr" style="margin-top:14px">R$ 1.399</div>
+          <div class="svc-extras" style="margin-top:14px">Fotos ilimitadas, impressão na hora, layout personalizado e monitor incluso.</div>
+        </div>
+      </div>
+      <div class="svc-extras"><b>Extras opcionais:</b> hora adicional R$ 220 · ímã nas fotos R$ 150 · álbum de assinaturas + fotos coladas R$ 250 · fundo temático/painel R$ 150.</div>
+    </div>
+
+    <!-- 360 -->
+    <div class="svc-group reveal">
+      <div class="svc-head">
+        <div class="tt">Plataforma 360°</div>
+        <div class="ds">Vídeos 360° ilimitados para registrar cada ângulo do seu evento · compartilhe na hora</div>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <div class="nm">2 horas</div>
+          <div class="hr">Plataforma 360°</div>
+          <div class="pr" style="margin-top:14px">R$ 500</div>
+          <div class="svc-extras" style="margin-top:14px">Vídeos ilimitados, compartilhamento na hora, diversão garantida.</div>
+        </div>
+        <div class="svc">
+          <div class="nm">3 horas</div>
+          <div class="hr">Plataforma 360°</div>
+          <div class="pr" style="margin-top:14px">R$ 700</div>
+          <div class="svc-extras" style="margin-top:14px">Vídeos ilimitados, compartilhamento na hora, diversão garantida.</div>
+        </div>
+        <div class="svc">
+          <div class="nm">4 horas</div>
+          <div class="hr">Plataforma 360°</div>
+          <div class="pr" style="margin-top:14px">R$ 1.000</div>
+          <div class="svc-extras" style="margin-top:14px">Vídeos ilimitados, compartilhamento na hora, diversão garantida.</div>
+        </div>
+      </div>
+      <div class="svc-extras">Atendimento exclusivo no espaço LUARE EVENTOS.</div>
+    </div>
+
+    <div class="center reveal" style="margin-top:44px">
+      <a class="btn btn-primary" href="https://wa.me/5596984362962?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20totem%20de%20fotos%20e%20a%20plataforma%20360%C2%B0%20para%20o%20meu%20evento." target="_blank" rel="noopener">Quero contratar um serviço</a>
     </div>
   </div>
 </section>
