@@ -321,6 +321,57 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .vf .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:520px){.vf .two{grid-template-columns:1fr}}
 .visita .btn{width:100%;justify-content:center;margin-top:8px}
+/* ---------- Agenda de visitas ---------- */
+.visita-sec{background:var(--navy-2);border-top:1px solid rgba(176,129,69,.18);border-bottom:1px solid rgba(176,129,69,.18)}
+.vwrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,56px);margin-top:44px;align-items:start}
+@media(max-width:940px){.vwrap{grid-template-columns:1fr;gap:32px}}
+.vcal{border:1px solid rgba(176,129,69,.28);border-radius:6px;background:rgba(6,26,46,.55);overflow:hidden}
+.vcal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(176,129,69,.2)}
+.vcal-head b{font-family:var(--serif);font-size:1.05rem;color:var(--white);font-weight:400}
+.vcal-nav{display:flex;gap:6px}
+.vcal-nav button{background:rgba(176,129,69,.14);border:1px solid rgba(176,129,69,.35);color:var(--gold-hi);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:14px;line-height:1;transition:.2s}
+.vcal-nav button:hover{background:rgba(176,129,69,.3)}
+.vcal-nav button:disabled{opacity:.3;cursor:not-allowed}
+.vcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:rgba(176,129,69,.14);padding:1px}
+.vcal-dh{background:rgba(6,26,46,.9);text-align:center;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-hi);padding:9px 0;font-weight:600}
+.vday{background:rgba(10,37,62,.92);border:0;padding:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;transition:.18s;color:var(--dim);font-family:var(--sans);position:relative}
+.vday:hover:not(:disabled){background:rgba(176,129,69,.22);color:#fff}
+.vday .n{font-size:.86rem;font-weight:400}
+.vday .vagas{font-size:.52rem;letter-spacing:.06em;color:var(--gold-hi);text-transform:uppercase}
+.vday.out{background:rgba(6,26,46,.4);cursor:default}
+.vday:disabled{cursor:not-allowed}
+.vday.past{opacity:.28}
+.vday.full{background:rgba(120,30,30,.25)}
+.vday.full .vagas{color:#e08e8e}
+.vday.sel{background:var(--gold);color:#fff}
+.vday.sel .vagas{color:rgba(255,255,255,.85)}
+.vday.sel .n{font-weight:700}
+.vcal-leg{display:flex;gap:18px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid rgba(176,129,69,.2);font-size:.68rem;color:var(--faint)}
+.vcal-leg span{display:inline-flex;align-items:center;gap:6px}
+.vcal-leg i{width:9px;height:9px;border-radius:2px;display:block}
+.vslots{padding:18px 20px;border-top:1px solid rgba(176,129,69,.2)}
+.vslots-t{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-hi);margin-bottom:12px;font-weight:600}
+.vslot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.vslot{background:rgba(246,247,236,.05);border:1px solid rgba(176,129,69,.3);color:var(--off);padding:11px 4px;border-radius:4px;font-family:var(--sans);font-size:.82rem;cursor:pointer;transition:.18s}
+.vslot:hover:not(:disabled){background:rgba(176,129,69,.24);border-color:var(--gold)}
+.vslot.sel{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+.vslot:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.vform{border:1px solid rgba(176,129,69,.32);border-radius:6px;padding:clamp(22px,3.4vw,34px);background:rgba(10,37,62,.5)}
+.vform .t{font-family:var(--serif);font-size:1.2rem;color:var(--white);margin-bottom:6px}
+.vform .s{color:var(--faint);font-size:.84rem;margin-bottom:22px;line-height:1.6}
+.vresumo{background:rgba(176,129,69,.12);border:1px solid rgba(176,129,69,.3);border-radius:5px;padding:12px 15px;margin-bottom:18px;font-size:.86rem;color:var(--off)}
+.vresumo b{color:var(--gold-hi)}
+.vok{text-align:center;padding:26px 18px}
+.vok .ic{font-size:2.4rem;margin-bottom:12px}
+.vok b{display:block;font-family:var(--serif);font-size:1.25rem;color:var(--white);margin-bottom:10px}
+.vok p{color:var(--dim);font-size:.9rem;line-height:1.7;margin-bottom:6px}
+.vok .when{color:var(--gold-hi);font-weight:600}
+.vaviso{font-size:.76rem;color:var(--faint);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid rgba(176,129,69,.18)}
+@media(max-width:560px){
+  .vday{min-height:46px}
+  .vday .vagas{font-size:.46rem}
+  .vslot-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
+}
 
 footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(176,129,69,.2)}
 .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;align-items:start}
@@ -468,6 +519,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <a href="#servicos">Serviços</a>
       <a href="#decoracao">Decoração</a>
       <a href="#depoimentos">Depoimentos</a>
+      <a href="#visita">Agendar visita</a>
       <a href="#contato">Contato</a>
       <a href="#disponibilidade" class="nav-cta">Ver minha data</a>
     </nav>
@@ -1229,6 +1281,122 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
   </div>
 </section>
 
+<!-- ================= AGENDAR VISITA ================= -->
+<section id="visita" class="visita-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Agende sua visita</div>
+      <h2 class="h2">Venha conhecer o espaço</h2>
+      <p class="lead">Escolha o dia e o horário, conte como é a sua festa e pronto — a visita fica reservada só para você, por uma hora. Assim chegamos na conversa já sabendo o que você precisa.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="vwrap">
+      <!-- CALENDÁRIO -->
+      <div class="vcal reveal">
+        <div class="vcal-head">
+          <b id="vMes">—</b>
+          <div class="vcal-nav">
+            <button id="vPrev" type="button" aria-label="Mês anterior" onclick="mudarMesVisita(-1)">‹</button>
+            <button id="vNext" type="button" aria-label="Próximo mês" onclick="mudarMesVisita(1)">›</button>
+          </div>
+        </div>
+        <div class="vcal-grid" id="vGrid"></div>
+        <div class="vcal-leg">
+          <span><i style="background:rgba(176,129,69,.55)"></i>livre</span>
+          <span><i style="background:rgba(120,30,30,.7)"></i>sem vaga</span>
+          <span><i style="background:var(--gold)"></i>selecionado</span>
+        </div>
+        <div class="vslots" id="vSlotsBox" style="display:none">
+          <div class="vslots-t">Horários em <span id="vSlotsDia">—</span></div>
+          <div class="vslot-grid" id="vSlots"></div>
+        </div>
+      </div>
+
+      <!-- FORMULÁRIO -->
+      <div class="vform reveal" id="vFormBox">
+        <div class="t" id="vFormT">Solicitar a visita</div>
+        <div class="s" id="vFormS">Cada visita dura 1 hora e é exclusiva sua — assim você conhece tudo com calma.</div>
+
+        <form id="vForm" onsubmit="solicitarVisita(event)">
+          <div class="vresumo" id="vResumo" style="display:none"></div>
+
+          <div class="vf">
+            <label for="vnome">Seu nome *</label>
+            <input id="vnome" type="text" placeholder="Como podemos te chamar?" required>
+          </div>
+          <div class="vf two">
+            <div><label for="vtel">WhatsApp *</label><input id="vtel" type="tel" placeholder="(96) 9 0000-0000" required></div>
+            <div><label for="vemail">E-mail</label><input id="vemail" type="email" placeholder="opcional"></div>
+          </div>
+
+          <div class="vf two">
+            <div>
+              <label for="vtipo">Tipo de evento *</label>
+              <select id="vtipo" required>
+                <option value="">Escolha…</option>
+                <option>Aniversário infantil</option>
+                <option>1 aninho</option>
+                <option>15 anos</option>
+                <option>Aniversário adulto</option>
+                <option>Casamento</option>
+                <option>Formatura</option>
+                <option>Chá de bebê / revelação</option>
+                <option>Corporativo</option>
+                <option>Ainda não sei</option>
+              </select>
+            </div>
+            <div>
+              <label for="vconvs">Convidados (aprox.)</label>
+              <input id="vconvs" type="number" min="20" max="170" placeholder="Ex.: 100">
+            </div>
+          </div>
+
+          <div class="vf two">
+            <div><label for="vdataev">Data do evento</label><input id="vdataev" type="date"></div>
+            <div>
+              <label for="vdecor">Vai querer decoração?</label>
+              <select id="vdecor">
+                <option value="">Ainda não sei</option>
+                <option>Sim, quero orçamento</option>
+                <option>Não, já tenho</option>
+                <option>Só quero ver ideias</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="vf">
+            <label for="vcomo">Como conheceu a LUARE?</label>
+            <select id="vcomo">
+              <option value="">—</option>
+              <option>Instagram</option>
+              <option>Indicação de alguém</option>
+              <option>Já fui a uma festa aqui</option>
+              <option>Google</option>
+              <option>Passando em frente</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <div class="vf">
+            <label for="vmsg">Conte um pouco sobre a festa</label>
+            <textarea id="vmsg" rows="3" placeholder="Tema, cores, o que não pode faltar, alguma dúvida…"></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="vEnviar" style="width:100%;justify-content:center" disabled>
+            Escolha um horário para continuar
+          </button>
+
+          <div class="vaviso">
+            A visita é gratuita e sem compromisso. Você recebe a confirmação pelo WhatsApp.
+            Se precisar remarcar, é só responder a mensagem.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= CONTATO ================= -->
 <section id="contato" class="contato-sec">
   <div class="wrap">
@@ -1588,6 +1756,245 @@ function calc(){
 }
 
 /* ============================================================
+   AGENDA DE VISITAS — horários reais, 1h por pessoa
+   ============================================================ */
+const VIS = {
+  horarios: ["09:00","10:00","11:00","14:00","15:00","16:00","17:00"],
+  maxDia: 5,                 // no máximo 5 visitas por dia
+  antecedencia: 1,           // dias mínimos antes da data
+  semanas: 6,                // quantas semanas de agenda para frente
+  ocupados: {},              // { "2026-11-10": { "10:00": true } }
+  porDia: {},                // { "2026-11-10": 2 }
+  dia: null,                 // data selecionada YYYY-MM-DD
+  hora: null,
+  ref: new Date()            // mês visível
+};
+
+function vISO(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function vHoje(){ const h=new Date(); h.setHours(0,0,0,0); return h; }
+function vMin(){ const m=vHoje(); m.setDate(m.getDate()+VIS.antecedencia); return m; }
+function vMax(){ const m=vHoje(); m.setDate(m.getDate()+VIS.semanas*7); return m; }
+function vFmt(iso){ const [a,mm,d]=iso.split("-"); return d+"/"+mm+"/"+a; }
+function vFmtLongo(iso){
+  const [a,mm,d]=iso.split("-");
+  const dt=new Date(+a,+mm-1,+d);
+  const sem=["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"][dt.getDay()];
+  return sem+", "+d+" de "+["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"][+mm-1];
+}
+
+async function carregarVisitas(){
+  try{
+    // sempre dados frescos: horário ocupado mostrado como livre é pior do que lentidão
+    const r = await fetch(SB_URL + "/rest/v1/rpc/visitas_ocupadas?t=" + Date.now(), {
+      method:"POST",
+      cache:"no-store",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY, "Content-Type":"application/json" },
+      body:"{}"
+    });
+    if(!r.ok) throw new Error(r.status);
+    const linhas = await r.json();
+    VIS.ocupados = {}; VIS.porDia = {};
+    (linhas||[]).forEach(l=>{
+      if(!l || !l.data) return;
+      VIS.ocupados[l.data] = VIS.ocupados[l.data] || {};
+      VIS.ocupados[l.data][l.hora] = true;
+      VIS.porDia[l.data] = (VIS.porDia[l.data]||0) + 1;
+    });
+    return true;
+  }catch(e){
+    console.warn("visitas:", e.message);
+    return false;
+  }
+}
+
+function vagasNoDia(iso){
+  const usados = VIS.porDia[iso] || 0;
+  return Math.max(VIS.maxDia - usados, 0);
+}
+
+function desenharVisitas(){
+  const box = document.getElementById("vGrid");
+  if(!box) return;
+  const y = VIS.ref.getFullYear(), m = VIS.ref.getMonth();
+  const MES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const elMes = document.getElementById("vMes");
+  if(elMes) elMes.textContent = MES[m].charAt(0).toUpperCase()+MES[m].slice(1)+" "+y;
+
+  // navegação limitada à janela de agendamento
+  const prev = document.getElementById("vPrev"), next = document.getElementById("vNext");
+  const primeiroDiaMes = new Date(y,m,1), ultimoDiaMes = new Date(y,m+1,0);
+  if(prev) prev.disabled = ultimoDiaMes < vMin();
+  if(next) next.disabled = primeiroDiaMes > vMax();
+
+  let html = ["dom","seg","ter","qua","qui","sex","sáb"].map(d=>'<div class="vcal-dh">'+d+'</div>').join('');
+  const inicio = primeiroDiaMes.getDay();
+  const total = ultimoDiaMes.getDate();
+  for(let i=0;i<inicio;i++) html += '<div class="vday out"></div>';
+
+  const min=vMin(), max=vMax();
+  for(let d=1; d<=total; d++){
+    const data = new Date(y,m,d);
+    const iso = vISO(data);
+    const fora = data<min || data>max;
+    const vagas = vagasNoDia(iso);
+    const livre = !fora && vagas>0;
+    const cls = ["vday", fora?"past":"", (!fora && vagas<=0)?"full":"", VIS.dia===iso?"sel":""].join(" ");
+    const rotulo = fora ? "" : (vagas>0 ? vagas+" vaga"+(vagas>1?"s":"") : "lotado");
+    html += '<button class="'+cls+'"'+(livre?'':' disabled')+
+            (livre?' onclick="escolherDiaVisita(\''+iso+'\')"':'')+'>'+
+            '<span class="n">'+d+'</span><span class="vagas">'+rotulo+'</span></button>';
+  }
+  box.innerHTML = html;
+}
+
+function escolherDiaVisita(iso){
+  VIS.dia = iso; VIS.hora = null;
+  desenharVisitas();
+  desenharSlots();
+  atualizarResumo();
+}
+
+function desenharSlots(){
+  const caixa = document.getElementById("vSlotsBox");
+  const grid = document.getElementById("vSlots");
+  const tit = document.getElementById("vSlotsDia");
+  if(!caixa || !grid) return;
+  if(!VIS.dia){ caixa.style.display="none"; return; }
+  caixa.style.display="block";
+  if(tit) tit.textContent = vFmt(VIS.dia);
+  const ocup = VIS.ocupados[VIS.dia] || {};
+  const cheio = vagasNoDia(VIS.dia) <= 0;
+  grid.innerHTML = VIS.horarios.map(h=>{
+    const usado = !!ocup[h];
+    const on = VIS.hora===h;
+    return '<button type="button" class="vslot'+(on?' sel':'')+'"'+
+      ((usado||cheio)?' disabled':' onclick="escolherHoraVisita(\''+h+'\')"')+'>'+h+'</button>';
+  }).join("");
+}
+
+function escolherHoraVisita(h){
+  VIS.hora = h;
+  desenharSlots();
+  atualizarResumo();
+}
+
+function atualizarResumo(){
+  const res = document.getElementById("vResumo");
+  const btn = document.getElementById("vEnviar");
+  if(!res || !btn) return;
+  if(VIS.dia && VIS.hora){
+    res.style.display="block";
+    res.innerHTML = 'Sua visita: <b>'+vFmtLongo(VIS.dia)+'</b>, às <b>'+VIS.hora+'</b> · 1 hora de duração';
+    btn.disabled = false;
+    btn.textContent = "Solicitar visita para "+vFmt(VIS.dia)+" às "+VIS.hora;
+  } else if(VIS.dia){
+    res.style.display="block";
+    res.innerHTML = 'Dia escolhido: <b>'+vFmtLongo(VIS.dia)+'</b> — agora escolha o horário.';
+    btn.disabled = true;
+    btn.textContent = "Escolha o horário para continuar";
+  } else {
+    res.style.display="none";
+    btn.disabled = true;
+    btn.textContent = "Escolha um horário para continuar";
+  }
+}
+
+function mudarMesVisita(n){
+  VIS.ref = new Date(VIS.ref.getFullYear(), VIS.ref.getMonth()+n, 1);
+  desenharVisitas();
+}
+
+async function solicitarVisita(e){
+  e.preventDefault();
+  if(!VIS.dia || !VIS.hora){ alert("Escolha o dia e o horário da visita."); return; }
+  const nome = document.getElementById("vnome").value.trim();
+  const tel  = document.getElementById("vtel").value.trim();
+  if(!nome || !tel){ alert("Preencha seu nome e o WhatsApp."); return; }
+
+  const btn = document.getElementById("vEnviar");
+  const textoOriginal = btn.textContent;
+  btn.disabled = true; btn.textContent = "Enviando…";
+
+  const corpo = {
+    data: VIS.dia, hora: VIS.hora, nome, telefone: tel,
+    email: (document.getElementById("vemail").value||"").trim() || null,
+    tipo_evento: document.getElementById("vtipo").value || null,
+    convidados: parseInt(document.getElementById("vconvs").value) || null,
+    data_evento: document.getElementById("vdataev").value || null,
+    decoracao: document.getElementById("vdecor").value || null,
+    como_conheceu: document.getElementById("vcomo").value || null,
+    obs: (document.getElementById("vmsg").value||"").trim() || null
+  };
+
+  try{
+    const r = await fetch(SB_URL + "/rest/v1/visitas", {
+      method:"POST",
+      headers:{ "apikey":SB_KEY, "Authorization":"Bearer "+SB_KEY,
+                "Content-Type":"application/json", "Prefer":"return=minimal" },
+      body: JSON.stringify(corpo)
+    });
+    if(r.status===409) throw new Error("Esse horário acabou de ser reservado por outra pessoa. Escolha outro, por favor.");
+    if(!r.ok){
+      let msg = "Não consegui reservar agora.";
+      try{ const d=await r.json(); if(d && d.message) msg += " ("+d.message+")"; }catch(_){}
+      throw new Error(msg);
+    }
+    mostrarSucessoVisita(corpo);
+  }catch(err){
+    alert(err.message || "Não consegui reservar. Tente outro horário ou fale no WhatsApp.");
+    btn.disabled = false; btn.textContent = textoOriginal;
+    await carregarVisitas();
+    desenharVisitas();
+    desenharSlots();
+  }
+}
+
+function mostrarSucessoVisita(v){
+  const box = document.getElementById("vFormBox");
+  if(!box) return;
+  const tel = WHATSAPP;
+  const msg = "Olá! Acabei de solicitar uma visita pelo site da LUARE.\n\n"+
+    "Nome: "+v.nome+"\n"+
+    "Visita: "+vFmt(v.data)+" às "+v.hora+"\n"+
+    (v.tipo_evento?"Tipo de evento: "+v.tipo_evento+"\n":"")+
+    (v.convidados?"Convidados: "+v.convidados+"\n":"")+
+    (v.data_evento?"Data do evento: "+vFmt(v.data_evento)+"\n":"")+
+    (v.decoracao?"Decoração: "+v.decoracao+"\n":"");
+  box.innerHTML = `
+    <div class="vok">
+      <div class="ic">✓</div>
+      <b>Visita solicitada!</b>
+      <p class="when">${vFmtLongo(v.data)}, às ${v.hora}</p>
+      <p>Guardamos esse horário só para você, por 1 hora.</p>
+      <p>Cada visita é exclusiva — assim você conhece o espaço com calma e já sai com o orçamento adiantado.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px">
+        <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/${tel}?text=${encodeURIComponent(msg)}">Confirmar no WhatsApp</a>
+        <button class="btn btn-outline" type="button" onclick="location.reload()">Agendar outra visita</button>
+      </div>
+      <div class="vaviso" style="text-align:left;margin-top:22px">
+        Sua solicitação chegou para a equipe da LUARE. Vamos confirmar pelo WhatsApp <b>${esc(tel)}</b>.
+        Se preferir falar agora, é só apertar o botão acima.
+      </div>
+    </div>`;
+}
+
+async function iniciarVisitas(){
+  if(!document.getElementById("vGrid")) return;
+  VIS.ref = new Date(); VIS.ref.setDate(1);
+  desenharVisitas();
+  desenharSlots();
+  atualizarResumo();
+  const ok = await carregarVisitas();
+  desenharVisitas();
+  if(!ok){
+    const leg = document.querySelector(".vcal-leg");
+    if(leg) leg.insertAdjacentHTML("afterend",
+      '<div style="padding:12px 20px;font-size:.76rem;color:#e0b48e;border-top:1px solid rgba(176,129,69,.2)">'+
+      'Não consegui carregar os horários agora — fale com a gente no WhatsApp que reservamos para você.</div>');
+  }
+}
+
+/* ============================================================
    AGENDAMENTO DE VISITA → WhatsApp
    ============================================================ */
 function enviarVisita(e){
@@ -1740,6 +2147,7 @@ syncDia();
 calc();
 desenharCalendario();
 carregarAgenda();
+iniciarVisitas();
 </script>
 </body>
 </html>
