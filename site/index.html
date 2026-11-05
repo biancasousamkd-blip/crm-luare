@@ -355,6 +355,19 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
 .svc-extras{margin-top:14px;font-size:.79rem;color:var(--faint);line-height:1.6;background:rgba(176,129,69,.07);border-left:2px solid rgba(176,129,69,.5);padding:12px 16px;border-radius:0 4px 4px 0}
 .svc-extras b{color:var(--gold-hi);font-weight:600}
 
+/* ---------- Depoimentos ---------- */
+.depo-sec{border-top:1px solid rgba(176,129,69,.18)}
+.depo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:46px}
+.depo{border:1px solid rgba(176,129,69,.26);border-radius:5px;padding:30px 26px 24px;background:rgba(4,21,62,.55);position:relative;display:flex;flex-direction:column;transition:border-color .3s,transform .3s}
+.depo:hover{border-color:rgba(176,129,69,.6);transform:translateY(-2px)}
+.depo .quote{position:absolute;top:12px;left:20px;font-family:var(--serif);font-size:3.4rem;line-height:1;color:rgba(176,129,69,.32);pointer-events:none}
+.depo p{color:var(--dim);font-size:.86rem;line-height:1.72;margin-top:22px;flex:1}
+.depo .meta{margin-top:18px;padding-top:14px;border-top:1px solid rgba(176,129,69,.2)}
+.depo .meta b{display:block;font-family:var(--serif);color:var(--white);font-size:.94rem;font-weight:400}
+.depo .meta span{display:block;color:var(--faint);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+.depo-nota{margin-top:24px;text-align:center}
+.depo-nota p{color:var(--faint);font-size:.76rem;line-height:1.6}
+
 /* ---------- Decoração ---------- */
 .decor-sec{background:linear-gradient(180deg,var(--navy),var(--navy-2))}
 .decor-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,5vw,60px);margin-top:48px;align-items:start}
@@ -398,6 +411,7 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
       <a href="#valores">Valores</a>
       <a href="#servicos">Serviços</a>
       <a href="#decoracao">Decoração</a>
+      <a href="#depoimentos">Depoimentos</a>
       <a href="#contato">Contato</a>
       <a href="#disponibilidade" class="nav-cta">Ver minha data</a>
     </nav>
@@ -1037,6 +1051,74 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
           <button class="btn btn-primary" type="submit">Enviar para o WhatsApp</button>
         </form>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEPOIMENTOS ================= -->
+<section id="depoimentos" class="depo-sec">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Depoimentos</div>
+      <h2 class="h2">Quem celebrou aqui</h2>
+      <p class="lead">Mensagens que recebemos de famílias que passaram pela LUARE. Sem roteiro, sem edição — do jeito que chegaram no nosso WhatsApp.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="depo-grid reveal">
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Eu simplesmente amei tudo! Foi muito mais do que eu imaginei. Já estou recomendando vocês para todo mundo, porque tenho certeza de que vão tornar o dia de muitas mamães tão leve, especial e lindo quanto tornaram o meu. Muito obrigada por fazerem parte desse momento tão importante da nossa família!</p>
+        <div class="meta"><b>Luciana</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Nossa, fiquei muito surpreendida com todo o capricho, a dedicação e o carinho que vocês tiveram em cada detalhe desse dia tão especial. Durante todo o processo, vocês sempre estiveram dispostas a me ouvir, responder todas as minhas dúvidas e até aceitar minhas mudanças (que não foram poucas!).</p>
+        <div class="meta"><b>Luciana</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Nossa experiência foi maravilhosa! Ficamos muito satisfeitos com a escolha do espaço, que com sua excelente estrutura contribuiu para tornar esse momento tão especial ainda mais bonito e tranquilo. A estrutura de vocês é realmente diferenciada! A cozinha é muito bem equipada e oferece todas as condições para o trabalho do buffet.</p>
+        <div class="meta"><b>Dayane</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>O telão também foi um ótimo recurso. O ambiente da recepção, com sua iluminação, dá um charme especial à celebração. Outro grande diferencial são os brinquedos para as crianças, que também puderam aproveitar a noite e se divertir muito! Ficamos imensamente felizes e satisfeitos por celebrar um momento tão mágico.</p>
+        <div class="meta"><b>Dayane</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Foi incrível, somente elogios aos colaboradores, todos muito atenciosos, o espaço impecável. As crianças se divertiram muito no espaço de brinquedos.</p>
+        <div class="meta"><b>Larissa</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Nós amamos e ficamos muito satisfeitos e felizes. Desde que nós vimos o espaço pela primeira vez já sabíamos que seria o melhor lugar. Alice aproveitou muito, todos os convidados elogiaram o espaço também e se sentiram super confortáveis. A recepção de vocês também foi incrível. Não temos nada a reclamar.</p>
+        <div class="meta"><b>Marya</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Passando pra agradecer todo o carinho e dedicação no nosso grande dia, muito obrigada pela cordialidade e dedicação! Amamos o presente que você nos deixou. Eu não poderia ter escolhido um local melhor para celebrar este momento tão especial — você e sua equipe fizeram toda a diferença.</p>
+        <div class="meta"><b>Mariza</b><span>Cliente LUARE</span></div>
+      </div>
+
+      <div class="depo">
+        <div class="quote">“</div>
+        <p>Foi maravilhoso! Foi lindo e inesquecível. Todos gostaram muito da festa. O único imprevisto foi que das músicas só 2 conseguimos cantar nas homenagens, e os vídeos não passamos porque no momento não tinha quem soubesse mexer no aparelho. Mas, diante desse impasse, tudo ocorreu tranquilamente. Lhe agradeço pela confiança.</p>
+        <div class="meta"><b>Ondina</b><span>Cliente LUARE</span></div>
+      </div>
+
+    </div>
+
+    <div class="depo-nota reveal">
+      <p>Mensagens recebidas por WhatsApp de famílias que celebraram na LUARE.</p>
     </div>
   </div>
 </section>
