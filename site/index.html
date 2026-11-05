@@ -163,7 +163,8 @@ header.solid .brand img{height:38px}
 /* ---------- Área Kids ---------- */
 .kids-sec{background:var(--navy-2);border-top:1px solid rgba(176,129,69,.18);border-bottom:1px solid rgba(176,129,69,.18)}
 .kids-video{position:relative;margin-top:44px;border:1px solid rgba(176,129,69,.35);border-radius:6px;overflow:hidden;background:var(--navy-3)}
-.kids-video video{width:100%;display:block;max-height:460px;object-fit:cover;background:#020D28}
+.kids-stage{display:flex;justify-content:center;background:#020D28;padding:0}
+.kids-video video{width:auto;max-width:100%;max-height:540px;display:block;margin:0 auto;background:#020D28}
 .kids-video-cap{padding:18px 22px;border-top:1px solid rgba(176,129,69,.22);background:rgba(4,21,62,.8)}
 .kids-video-cap b{display:block;font-family:var(--serif);color:var(--white);font-size:1rem;font-weight:400;margin-bottom:4px}
 .kids-video-cap span{color:var(--faint);font-size:.8rem}
@@ -652,7 +653,9 @@ footer{background:var(--navy-3);padding:64px 0 28px;border-top:1px solid rgba(17
     </div>
 
     <div class="kids-video reveal">
-      <video id="kidsVideo" src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-tour.mp4" poster="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-airhockey.jpg" controls playsinline preload="none" muted loop></video>
+      <div class="kids-stage">
+        <video id="kidsVideo" src="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-tour.mp4" poster="https://cpvqnvonltcuzsnoigci.supabase.co/storage/v1/object/public/site-luare/kids-airhockey.jpg" controls playsinline preload="none" muted loop></video>
+      </div>
       <div class="kids-video-cap"><b>Direto da nossa Área Kids</b><span>Air hockey, brinquedão, VR e mesa de jogos — tudo dentro do espaço.</span></div>
     </div>
 
