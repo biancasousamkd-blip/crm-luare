@@ -123,12 +123,19 @@ function evParaBanco(e){
 function lanDoBanco(r){
   return { id:r.id, tipo:r.tipo, clienteId:r.cliente_id, eventoId:r.evento_id,
            desc:nz(r.descricao), valor:Number(r.valor||0), venc:nz(r.vencimento),
-           pago:!!r.pago, pagoEm:nz(r.pago_em), criado:r.criado, _db:true };
+           pago:!!r.pago, pagoEm:nz(r.pago_em),
+           origemEscalaId:r.origem_escala_id||null,
+           origemFornId:r.origem_forn_id||null,
+           origemCustoId:r.origem_custo_id||null,
+           criado:r.criado, _db:true };
 }
 function lanParaBanco(l){
   return { tipo:l.tipo, cliente_id:real(l.clienteId), evento_id:real(l.eventoId),
            descricao:vazio(l.desc), valor:l.valor, vencimento:vazio(l.venc),
-           pago:!!l.pago, pago_em:vazio(l.pagoEm) };
+           pago:!!l.pago, pago_em:vazio(l.pagoEm),
+           origem_escala_id:vazio(l.origemEscalaId),
+           origem_forn_id:vazio(l.origemFornId),
+           origem_custo_id:vazio(l.origemCustoId) };
 }
 
 
