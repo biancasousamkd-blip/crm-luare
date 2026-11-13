@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#04153E">
+<title>Cozinha LUARE</title>
+<style>
+:root{
+  --navy:#04153E; --navy2:#0A253E; --gold:#B08145; --gold-l:#C9A063;
+  --off:#F6F7EC; --line:#E3E0D2; --mut:#6E7484; --bg:#F4F5EF;
+  --ok:#1F7A4D; --warn:#B4720C; --bad:#A3262C;
+  --r:14px; --sh:0 2px 14px rgba(4,21,62,.07);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--navy); font-size:15px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:inherit;font-size:15px}
+a{color:var(--gold);text-decoration:none}
+
+/* ---------- LOGIN ---------- */
+#login{
+  position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(118deg,#061A2E 0%,#0A253E 48%,#123552 100%);padding:20px;
+}
+.login-box{
+  width:100%;max-width:360px;background:#fff;border-radius:18px;padding:26px 22px 22px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.login-box .logo{display:block;height:56px;margin:0 auto 14px}
+.login-box h1{font-size:16.5px;margin:0 0 3px;text-align:center;letter-spacing:.3px}
+.login-box .sub{font-size:12px;color:var(--mut);text-align:center;margin-bottom:20px;letter-spacing:.6px;text-transform:uppercase}
+.login-box input{
+  width:100%;padding:13px 14px;margin-bottom:10px;border:1px solid var(--line);
+  border-radius:10px;background:#FBFBF6;outline:none
+}
+.login-box input:focus{border-color:var(--gold);background:#fff}
+.login-box .err{color:var(--bad);font-size:12.5px;min-height:18px;margin-bottom:4px;text-align:center}
+.login-box .rodape{font-size:11px;color:#98A0B0;text-align:center;margin-top:16px;line-height:1.6}
+
+/* ---------- ESTRUTURA ---------- */
+#app{display:none;min-height:100vh}
+#app.on{display:block}
+header.top{
+  position:sticky;top:0;z-index:30;background:var(--navy);color:#fff;
+  padding:calc(10px + env(safe-area-inset-top)) 16px 10px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 2px 12px rgba(4,21,62,.2);
+}
+header.top .lg{height:30px}
+header.top .tt{flex:1;min-width:0}
+header.top .tt b{display:block;font-size:14.5px;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.top .tt span{font-size:10.5px;color:var(--gold-l);letter-spacing:1.2px;text-transform:uppercase}
+header.top .sair{
+  background:rgba(255,255,255,.1);border:0;color:#fff;padding:8px 12px;border-radius:9px;font-size:12.5px;cursor:pointer
+}
+main{padding:14px 14px 96px;max-width:860px;margin:0 auto}
+
+nav.tabs{
+  position:fixed;bottom:0;left:0;right:0;z-index:40;background:#fff;
+  border-top:1px solid var(--line);display:flex;overflow-x:auto;scrollbar-width:none;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{
+  flex:0 0 auto;min-width:74px;background:none;border:0;padding:9px 10px 8px;color:var(--mut);
+  font-size:10.5px;font-weight:600;letter-spacing:.2px;cursor:pointer;display:flex;
+  flex-direction:column;align-items:center;gap:3px;
+}
+nav.tabs button i{font-style:normal;font-size:17px;line-height:1}
+nav.tabs button.on{color:var(--navy)}
+nav.tabs button.on i{color:var(--gold)}
+
+/* ---------- COMPONENTES ---------- */
+.card{background:#fff;border-radius:var(--r);padding:15px;margin-bottom:12px;box-shadow:var(--sh)}
+.card h3{margin:0 0 12px;font-size:14px;letter-spacing:.2px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card h3 .mini{font-weight:400;font-size:11.5px;color:var(--mut)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.kpi{background:#fff;border-radius:var(--r);padding:13px 14px;box-shadow:var(--sh);border-left:3px solid var(--gold)}
+.kpi .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);margin-bottom:5px}
+.kpi .v{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.kpi .s{font-size:11px;color:var(--mut);margin-top:2px}
+.kpi.bad{border-left-color:var(--bad)}
+.kpi.warn{border-left-color:var(--warn)}
+.kpi.ok{border-left-color:var(--ok)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--navy);color:#fff;border:0;border-radius:10px;padding:11px 16px;
+  font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap
+}
+.btn.p{background:var(--gold)}
+.btn.g{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.d{background:#fff;color:var(--bad);border:1px solid #E7C6C8}
+.btn:disabled{opacity:.45}
+.btn.sm{padding:8px 12px;font-size:12.5px;border-radius:9px}
+.btn.full{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.right{text-align:right}
+
+.lista{display:flex;flex-direction:column;gap:1px;background:var(--line);border-radius:12px;overflow:hidden}
+.item{background:#fff;padding:13px 14px;display:flex;gap:12px;align-items:center;cursor:pointer}
+.item:active{background:#FAFAF5}
+.item .ic{
+  width:36px;height:36px;flex:0 0 36px;border-radius:10px;background:var(--off);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:16px
+}
+.item .tx{flex:1;min-width:0}
+.item .tx b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .tx span{font-size:12px;color:var(--mut);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .vl{font-size:13.5px;font-weight:700;text-align:right;white-space:nowrap}
+
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.3px;padding:3px 8px;border-radius:20px;text-transform:uppercase}
+.tag.gold{background:#F6EEDF;color:#8A6425}
+.tag.ok{background:#E4F2EA;color:var(--ok)}
+.tag.warn{background:#FBF0DA;color:var(--warn)}
+.tag.bad{background:#F8E5E6;color:var(--bad)}
+.tag.off{background:#EDEDE6;color:var(--mut)}
+
+.campo{margin-bottom:11px}
+.campo label{display:block;font-size:11.5px;font-weight:600;color:var(--mut);margin-bottom:5px;letter-spacing:.2px}
+.campo input,.campo select,.campo textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#FBFBF6;outline:none
+}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--gold);background:#fff}
+.campo textarea{min-height:70px;resize:vertical}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.vazio{text-align:center;padding:34px 18px;color:var(--mut);font-size:13.5px}
+.vazio b{display:block;color:var(--navy);font-size:15px;margin-bottom:6px}
+
+.modal-bg{
+  position:fixed;inset:0;background:rgba(4,21,62,.5);z-index:70;display:none;
+  align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)
+}
+.modal-bg.on{display:flex}
+.modal{
+  background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;
+  padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto
+}
+@media(min-width:620px){
+  .modal-bg{align-items:center}
+  .modal{border-radius:18px;max-height:88vh}
+}
+.modal h3{margin:0 0 14px;font-size:16px}
+.modal .acts{display:flex;gap:8px;margin-top:16px}
+.modal .acts .btn{flex:1}
+
+.toast{
+  position:fixed;left:14px;right:14px;bottom:86px;z-index:90;background:var(--navy);color:#fff;
+  padding:12px 16px;border-radius:12px;font-size:13.5px;text-align:center;
+  box-shadow:0 8px 30px rgba(4,21,62,.3);opacity:0;transform:translateY(12px);
+  transition:.22s;pointer-events:none
+}
+.toast.on{opacity:1;transform:translateY(0)}
+.toast.erro{background:var(--bad)}
+
+.nota{font-size:12px;color:var(--mut);line-height:1.5;margin-top:8px}
+.sep{height:1px;background:var(--line);margin:12px 0}
+.aviso{
+  background:#FBF0DA;border-left:3px solid var(--warn);padding:11px 13px;border-radius:9px;
+  font-size:12.5px;color:#6B4A08;margin-bottom:12px
+}
+.hero{
+  background:linear-gradient(118deg,#061A2E,#0A253E 55%,#123552);color:#fff;border-radius:var(--r);
+  padding:16px;margin-bottom:12px;position:relative;overflow:hidden
+}
+.hero .l{font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-l)}
+.hero .n{font-size:17px;font-weight:700;margin-top:3px}
+.hero .d{font-size:12.5px;color:#BFD0E2;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);padding:7px 6px;border-bottom:1px solid var(--line)}
+td{padding:9px 6px;border-bottom:1px solid #F0EFE6}
+tr:last-child td{border-bottom:0}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-box">
+    <img class="logo" id="logoLogin" alt="LUARE">
+    <h1>COZINHA LUARE</h1>
+    <div class="sub">Produção e buffet</div>
+    <div class="err" id="loginErr"></div>
+    <input id="u" placeholder="Usuário" autocapitalize="none" autocomplete="username">
+    <input id="p" type="password" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')entrar()">
+    <button class="btn p full" onclick="entrar()">Entrar</button>
+    <div class="rodape" id="loginRod">Acesso restrito à equipe da cozinha.</div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="top">
+    <img class="lg" id="logoTop" alt="LUARE">
+    <div class="tt"><b id="quem">—</b><span id="papel">—</span></div>
+    <button class="sair" onclick="sair()">Sair</button>
+  </header>
+  <main id="view"></main>
+  <nav class="tabs" id="tabs"></nav>
+</div>
+
+<div class="modal-bg" id="mbg"><div class="modal" id="mbox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="logo.js"></script>
+<script src="app.js"></script>
+<script src="app-dados.js"></script>
+<script src="app-telas.js"></script>
+</body>
+</html>
