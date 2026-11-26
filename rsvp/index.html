@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Confirmação de presença · LUARE EVENTOS</title>
+<meta name="theme-color" content="#1B2A4A">
+<style>
+:root{
+  --navy:#1B2A4A; --navy2:#24365C; --gold:#C6A15B; --cream:#FBF7F0;
+  --ink:#1F2430; --muted:#6B7280; --line:#E5E0D6; --ok:#2E7D5B; --bad:#B3453B;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--cream); color:var(--ink); min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  padding:0 0 env(safe-area-inset-bottom);
+}
+.wrap{width:100%;max-width:520px;padding:24px 20px 40px}
+header{text-align:center;padding:14px 0 22px}
+.marca{
+  font-family:Georgia,"Times New Roman",serif; font-size:13px; letter-spacing:.34em;
+  text-transform:uppercase; color:var(--gold); font-weight:600;
+}
+.linha{width:44px;height:1px;background:var(--gold);margin:12px auto}
+.card{
+  background:#fff;border-radius:var(--radius);padding:26px 22px;
+  box-shadow:0 2px 4px rgba(27,42,74,.04),0 12px 30px rgba(27,42,74,.07);
+  border:1px solid rgba(198,161,91,.16);
+}
+h1{
+  font-family:Georgia,"Times New Roman",serif; font-size:25px; line-height:1.25;
+  margin:0 0 6px; color:var(--navy); font-weight:400; text-align:center;
+}
+.sub{color:var(--muted);font-size:14.5px;text-align:center;margin:0 0 22px;line-height:1.5}
+.info{
+  background:var(--cream);border-radius:12px;padding:14px 16px;margin:0 0 20px;
+  border-left:3px solid var(--gold);
+}
+.info .l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.info .v{font-size:15px;color:var(--navy);font-weight:600}
+.info + .info{margin-top:10px}
+.btn{
+  display:block;width:100%;padding:16px;border:0;border-radius:13px;font-size:15.5px;
+  font-weight:600;cursor:pointer;font-family:inherit;transition:transform .1s,opacity .15s;
+}
+.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.p{background:var(--navy);color:#fff}
+.btn.g{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.bad{background:#fff;color:var(--bad);border:1.5px solid rgba(179,69,59,.3)}
+.space{height:11px}
+.campo{margin:0 0 14px}
+.campo label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:500}
+select,input[type=number],input[type=text]{
+  width:100%;padding:14px;font-size:15.5px;font-family:inherit;color:var(--ink);
+  border:1.5px solid var(--line);border-radius:12px;background:#fff;appearance:none;
+}
+select:focus,input:focus{outline:0;border-color:var(--gold)}
+.qrbox{text-align:center;padding:8px 0 4px}
+.qrbox img{width:224px;height:224px;display:block;margin:0 auto;border-radius:10px}
+.mesa{
+  margin:18px 0 0;text-align:center;background:var(--navy);color:#fff;
+  border-radius:14px;padding:16px;
+}
+.mesa .l{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.mesa .v{font-family:Georgia,serif;font-size:31px;line-height:1}
+.ok-box{
+  background:#EAF4EE;border:1px solid rgba(46,125,91,.2);border-radius:12px;
+  padding:14px 16px;color:#1F5C43;font-size:14px;line-height:1.55;margin:0 0 18px;
+}
+.bad-box{
+  background:#FBEDEB;border:1px solid rgba(179,69,59,.2);border-radius:12px;
+  padding:14px 16px;color:#8E3730;font-size:14px;line-height:1.55;margin:0 0 18px;
+}
+.entrou{
+  background:#EAF4EE;border:1px solid rgba(46,125,91,.25);border-radius:12px;
+  padding:12px 15px;color:#1F5C43;font-size:13.5px;margin-top:16px;text-align:center;
+}
+footer{text-align:center;color:#A9A29A;font-size:11.5px;margin-top:26px;line-height:1.7}
+.oculto{display:none !important}
+.spin{
+  width:26px;height:26px;border:2.5px solid var(--line);border-top-color:var(--gold);
+  border-radius:50%;animation:g .8s linear infinite;margin:34px auto;
+}
+@keyframes g{to{transform:rotate(360deg)}}
+.fade{animation:f .28s ease}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="marca">Luare Eventos</div>
+    <div class="linha"></div>
+  </header>
+
+  <div id="app"><div class="spin"></div></div>
+
+  <footer>
+    LUARE EVENTOS · Santana / AP<br>
+    Porque celebrar importa
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+/* ============================================================
+   CONFIG — mesmo projeto Supabase dos outros sistemas da Luare
+   ============================================================ */
+const SB_URL = 'https://cpvqnvonltcuzsnoigci.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwdnFudm9ubHRjdXpzbm9pZ2NpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0Mjg2NDIsImV4cCI6MjEwOTAwNDY0Mn0.cO7VJhpDEIw9kHwAnZfFFi0jreoA7BHp5fnxNyTAJzs';
+
+const el = id => document.getElementById(id);
+const app = () => el('app');
+
+function rpc(fn, corpo){
+  return fetch(SB_URL + '/rest/v1/rpc/' + fn, {
+    method: 'POST',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(corpo || {})
+  }).then(r => r.json());
+}
+
+const esc = s => String(s == null ? '' : s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+function dataBR(iso){
+  if (!iso) return '';
+  const [a,m,d] = String(iso).slice(0,10).split('-');
+  return d + '/' + m + '/' + a;
+}
+const DIAS = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+function diaSemana(iso){
+  if (!iso) return '';
+  const p = String(iso).slice(0,10).split('-');
+  const dt = new Date(+p[0], +p[1]-1, +p[2]);
+  return DIAS[dt.getDay()];
+}
+
+function token(){
+  const m = location.search.match(/[?&]t=([^&]+)/) || location.hash.match(/t=([^&]+)/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function erro(msg, extra){
+  app().innerHTML =
+    '<div class="card fade">' +
+      '<h1>Não foi possível abrir</h1>' +
+      '<div class="bad-box">' + esc(msg) + '</div>' +
+      (extra ? '<p class="sub">' + esc(extra) + '</p>' : '') +
+    '</div>';
+}
+
+/* ============================================================
+   TELA 1 — CONFIRMAÇÃO
+   ============================================================ */
+function telaConfirmar(d){
+  const encerrado = d.prazo && new Date() > new Date(d.prazo + 'T23:59:59');
+  const jaResp = d.rsvp !== 'pendente';
+
+  let html = '<div class="card fade">';
+  html += '<h1>' + esc(d.evento) + '</h1>';
+  html += '<p class="sub">' + esc(d.nome) + ', você é nosso convidado.</p>';
+
+  html += '<div class="info"><div class="l">Data</div><div class="v">' +
+          dataBR(d.data) + ' · ' + diaSemana(d.data) + '</div></div>';
+  if (d.local) html += '<div class="info"><div class="l">Local</div><div class="v">' + esc(d.local) + '</div></div>';
+  if (d.prazo) html += '<div class="info"><div class="l">Confirme até</div><div class="v">' + dataBR(d.prazo) + '</div></div>';
+
+  if (d.evento_status && d.evento_status !== 'ativo'){
+    html += '<div class="bad-box">Este evento não está mais recebendo confirmações.</div>';
+    return fechar(html);
+  }
+  if (encerrado){
+    html += '<div class="bad-box">O prazo para confirmar presença encerrou. ' +
+            'Fale com a Luare para verificar sua situação.</div>';
+    return fechar(html);
+  }
+
+  if (jaResp){
+    const txt = d.rsvp === 'confirmado'
+      ? 'Sua presença já está confirmada.'
+      : 'Você marcou que não poderá comparecer.';
+    const cls = d.rsvp === 'confirmado' ? 'ok-box' : 'bad-box';
+    html += '<div class="' + cls + '">' + txt + '</div>';
+    html += '<button class="btn p" onclick="verIngresso()">Ver meu ingresso</button>';
+    html += '<div class="space"></div>';
+    html += '<button class="btn g" onclick="responder(\'' +
+            (d.rsvp === 'confirmado' ? 'recusado' : 'confirmado') + '\', 0)">' +
+            (d.rsvp === 'confirmado' ? 'Não poderei mais ir' : 'Quero confirmar presença') +
+            '</button>';
+  } else {
+    html += '<div class="campo"><label>Quantas pessoas vêm com você? (além de você)</label>' +
+            '<select id="acomp">';
+    for (let i = 0; i <= 10; i++){
+      html += '<option value="' + i + '"' + (i === (d.acompanhantes||0) ? ' selected' : '') + '>' +
+              (i === 0 ? 'Somente eu' : i + (i === 1 ? ' acompanhante' : ' acompanhantes')) +
+              '</option>';
+    }
+    html += '</select></div>';
+    html += '<button class="btn ok" onclick="responder(\'confirmado\')">Sim, vou comparecer</button>';
+    html += '<div class="space"></div>';
+    html += '<button class="btn bad" onclick="responder(\'recusado\')">Não poderei ir</button>';
+  }
+
+  html += '</div>';
+  app().innerHTML = html;
+}
+
+function fechar(html){
+  app().innerHTML = html + '</div>';
+}
+
+function responder(resposta, acomp){
+  const sel = el('acomp');
+  const n = (acomp != null) ? acomp : (sel ? parseInt(sel.value, 10) : 0);
+  app().innerHTML = '<div class="spin"></div>';
+  rpc('conv_responder', { p_token: token(), p_resposta: resposta, p_acompanhantes: n })
+    .then(r => {
+      if (!r || !r.ok){ erro((r && r.erro) || 'Não conseguimos registrar sua resposta.'); return; }
+      if (resposta === 'confirmado') verIngresso();
+      else abrir();
+    })
+    .catch(() => erro('Falha de conexão. Tente novamente.'));
+}
+
+/* ============================================================
+   TELA 2 — INGRESSO COM QR
+   ============================================================ */
+function verIngresso(){
+  app().innerHTML = '<div class="spin"></div>';
+  rpc('conv_ingresso', { p_token: token() })
+    .then(d => {
+      if (!d || !d.ok){ erro((d && d.erro) || 'Ingresso indisponível.'); return; }
+
+      const url = location.origin + location.pathname + '?t=' + encodeURIComponent(d.token);
+
+      let html = '<div class="card fade">';
+      html += '<h1>Seu ingresso</h1>';
+      html += '<p class="sub">' + esc(d.evento) + ' · ' + dataBR(d.data) + '</p>';
+
+      html += '<div class="qrbox"><div id="qrcode"></div></div>';
+      html += '<p class="sub" style="margin-top:10px;font-size:12.5px">' +
+              'Apresente este código na entrada.</p>';
+
+      html += '<div class="info"><div class="l">Convidado</div><div class="v">' + esc(d.nome) + '</div></div>';
+      html += '<div class="info"><div class="l">Pessoas</div><div class="v">' +
+              (1 + (d.acompanhantes||0)) + (d.acompanhantes ? ' (' + d.nome + ' + ' + d.acompanhantes + ')' : '') +
+              '</div></div>';
+
+      if (d.mesa){
+        html += '<div class="mesa"><div class="l">Sua mesa</div><div class="v">' + esc(d.mesa) + '</div></div>';
+      } else {
+        html += '<div class="info" style="margin-top:18px"><div class="l">Mesa</div>' +
+                '<div class="v" style="font-weight:400;font-size:14px">Informada na recepção</div></div>';
+      }
+
+      if (d.checkin_em){
+        html += '<div class="entrou">✓ Entrada registrada às ' + esc(d.checkin_hora) + '</div>';
+      }
+
+      html += '<div class="space"></div>';
+      html += '<button class="btn g" onclick="abrir()">Voltar</button>';
+      html += '</div>';
+
+      app().innerHTML = html;
+
+      try{
+        new QRCode(document.getElementById('qrcode'), {
+          text: url, width: 448, height: 448,
+          colorDark: '#1B2A4A', colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        const img = document.querySelector('#qrcode img, #qrcode canvas');
+        if (img && img.tagName === 'IMG'){ img.style.width = '224px'; img.style.height = '224px'; }
+      }catch(e){
+        document.getElementById('qrcode').innerHTML =
+          '<p class="sub">Não foi possível desenhar o código. Mostre esta tela na entrada: ' +
+          esc(d.nome) + '</p>';
+      }
+    })
+    .catch(() => erro('Falha de conexão. Tente novamente.'));
+}
+
+/* ============================================================
+   INÍCIO
+   ============================================================ */
+function abrir(){
+  if (!token()){
+    erro('Este link está incompleto.',
+         'Use o link que você recebeu da Luare Eventos para confirmar sua presença.');
+    return;
+  }
+  app().innerHTML = '<div class="spin"></div>';
+  rpc('conv_abrir', { p_token: token() })
+    .then(d => {
+      if (!d || !d.ok){ erro((d && d.erro) || 'Link inválido.'); return; }
+      if (d.rsvp === 'confirmado' && d.checkin_em) { verIngresso(); return; }
+      telaConfirmar(d);
+    })
+    .catch(() => erro('Falha de conexão. Verifique sua internet e tente novamente.'));
+}
+
+abrir();
+</script>
+</body>
+</html>
