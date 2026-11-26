@@ -733,7 +733,7 @@ function novoConvidado(evId){
       '<div class="campo"><label>Telefone (WhatsApp)</label><input id="ncTel" type="tel" placeholder="(96) 99999-9999"></div>' +
       '<div class="campo"><label>E-mail</label><input id="ncEmail" type="email" placeholder="opcional"></div>' +
       '<div class="campo"><label>Acompanhantes</label><select id="ncAcomp">' +
-        Array.from({length:11},(_,i)=>'<option value="'+i+'">'+i+'</option>').join('') +
+        Array.from({length:(limiteAcomp(evId)+1)},(_,i)=>'<option value="'+i+'">'+i+'</option>').join('') +
       '</select></div>' +
       '<div class="campo"><label>Mesa</label><input id="ncMesa" placeholder="Ex.: 7"></div>' +
       '<button class="btn p" onclick="salvarConvidado(\'' + evId + '\')">Adicionar</button>' +
@@ -758,6 +758,12 @@ function salvarConvidado(evId){
   }).catch(() => toast('Sem conexão.', 'erro'));
 }
 
+function limiteAcomp(evId){
+  const ev = (CACHE[evId] && CACHE[evId].evento) || {};
+  const m = ev.max_acompanhantes;
+  return (m === null || m === undefined) ? 10 : Number(m);
+}
+
 function editarConvidado(evId, cvId){
   const c = CACHE[evId].convidados.find(x => x.id === cvId);
   if (!c) return;
@@ -771,7 +777,7 @@ function editarConvidado(evId, cvId){
       '<div class="campo"><label>Telefone</label><input id="ecTel" type="tel" value="' + esc(c.telefone||'') + '"></div>' +
       '<div class="campo"><label>Mesa</label><input id="ecMesa" value="' + esc(c.mesa||'') + '"></div>' +
       '<div class="campo"><label>Acompanhantes</label><select id="ecAcomp">' +
-        Array.from({length:11},(_,i)=>'<option value="'+i+'"'+(i===(c.acompanhantes||0)?' selected':'')+'>'+i+'</option>').join('') +
+        Array.from({length:(limiteAcomp(evId)+1)},(_,i)=>'<option value="'+i+'"'+(i===(c.acompanhantes||0)?' selected':'')+'>'+i+'</option>').join('') +
       '</select></div>' +
       '<button class="btn p" onclick="gravarConvidado(\'' + evId + '\',\'' + cvId + '\')">Salvar</button>' +
     '</div>' +
