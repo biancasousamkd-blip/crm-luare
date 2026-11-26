@@ -200,9 +200,10 @@ function telaConfirmar(d){
             (d.rsvp === 'confirmado' ? 'Não poderei mais ir' : 'Quero confirmar presença') +
             '</button>';
   } else {
+    var maxAcomp = (d.max_acompanhantes === null || d.max_acompanhantes === undefined) ? 10 : d.max_acompanhantes;
     html += '<div class="campo"><label>Quantas pessoas vêm com você? (além de você)</label>' +
             '<select id="acomp">';
-    for (let i = 0; i <= 10; i++){
+    for (let i = 0; i <= maxAcomp; i++){
       html += '<option value="' + i + '"' + (i === (d.acompanhantes||0) ? ' selected' : '') + '>' +
               (i === 0 ? 'Somente eu' : i + (i === 1 ? ' acompanhante' : ' acompanhantes')) +
               '</option>';
